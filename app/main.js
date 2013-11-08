@@ -24,7 +24,7 @@ var _homeExtent; // set this in init() if desired; otherwise, it will
 				 // be the default extent of the web map;
 
 var _isMobile = isMobile();
-
+var _isIE = (navigator.appVersion.indexOf("MSIE") > -1);
 var _isEmbed = false;
 
 var _layerTestSites;
@@ -116,7 +116,7 @@ function initMap() {
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
 		$.each(result.features, function(index, value) {
-			value.setSymbol(createSymbol(4,[255,0,0],1))
+			value.setSymbol(createSymbol(7,[255,0,0],1))
 			_layerTestSites.add(value)
 		});
 		_map.addLayer(_layerTestSites);
@@ -124,14 +124,10 @@ function initMap() {
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
 	
-	/*
 	
-	use this for layer interactivity
-	
-	dojo.connect(_layerOV, "onMouseOver", layerOV_onMouseOver);
-	dojo.connect(_layerOV, "onMouseOut", layerOV_onMouseOut);
-	dojo.connect(_layerOV, "onClick", layerOV_onClick);		
-	*/
+	dojo.connect(_layerTestSites, "onMouseOver", layerTestSites_onMouseOver);
+	dojo.connect(_layerTestSites, "onMouseOut", layerTestSites_onMouseOut);
+	dojo.connect(_layerTestSites, "onClick", layerTestSites_onClick);		
 	
 	handleWindowResize();
 	
@@ -141,50 +137,57 @@ createSymbol = function(size, rgb, opacity)
 {
 	return new esri.symbol.SimpleMarkerSymbol(
 				esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, size,
-				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(rgb), 2),
+				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,0]), 2),
 				new dojo.Color(rgb.concat([opacity]))
 			);	
 }
 
-/*
 
-sample layer event code.
-
-function layerOV_onMouseOver(event) 
+function layerTestSites_onMouseOver(event) 
 {
 	if (_isMobile) return;
 	var graphic = event.graphic;
 	_map.setMapCursor("pointer");
+	graphic.setSymbol(createSymbol(9,[255,0,0],1));
+	/*
 	if ($.inArray(graphic, _selected) == -1) {
 		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.medium));
 	}
+	*/
 	if (!_isIE) moveGraphicToFront(graphic);	
-	$("#hoverInfo").html("<b>"+graphic.attributes.getLanguage()+"</b>"+"<p>"+graphic.attributes.getRegion());
+	$("#hoverInfo").html("<b>"+graphic.attributes.Name+"</b>");
 	var pt = _map.toScreen(graphic.geometry);
 	hoverInfoPos(pt.x,pt.y);	
 }
 
 
-function layerOV_onMouseOut(event) 
+function layerTestSites_onMouseOut(event) 
 {
 	var graphic = event.graphic;
+	graphic.setSymbol(createSymbol(7,[255,0,0],1))	
 	_map.setMapCursor("default");
 	$("#hoverInfo").hide();
+	/*
 	if ($.inArray(graphic, _selected) == -1) {
 		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.tiny));
 	}
+	*/
 }
 
 
-function layerOV_onClick(event) 
+function layerTestSites_onClick(event) 
 {
+	/*
 	$("#hoverInfo").hide();
 	var graphic = event.graphic;
 	_languageID = graphic.attributes.getLanguageID();
 	$("#selectLanguage").val(_languageID);
 	changeState(STATE_SELECTION_OVERVIEW);
 	scrollToPage($.inArray($.grep($("#listThumbs").children("li"),function(n,i){return n.value == _languageID})[0], $("#listThumbs").children("li")));	
+	*/
 }
+
+/*
 
 function createIconMarker(iconPath, spec) 
 {
@@ -196,6 +199,8 @@ function resizeSymbol(symbol, spec)
 	return symbol.setWidth(spec.getWidth()).setHeight(spec.getHeight())	
 }
 
+
+*/
 function moveGraphicToFront(graphic)
 {
 	var dojoShape = graphic.getDojoShape();
@@ -217,8 +222,6 @@ function hoverInfoPos(x,y){
 	}
 	$("#hoverInfo").show();
 }
-
-*/
 
 
 function handleWindowResize() {
