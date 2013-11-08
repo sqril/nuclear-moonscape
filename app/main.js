@@ -9,8 +9,7 @@ dojo.require("esri.map");
 
 var TITLE = "This is the title."
 var BYLINE = "This is the byline"
-var GEOMETRY_SERVICE_URL = "http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer";
-var BASEMAP_URL = "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer";
+var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
 
 /******************************************************
 ***************** end config section ******************
@@ -27,6 +26,8 @@ var _homeExtent; // set this in init() if desired; otherwise, it will
 var _isMobile = isMobile();
 
 var _isEmbed = false;
+
+var _layerTestSites;
 
 /*
 
@@ -75,8 +76,7 @@ function init() {
 	$("#title").append(TITLE);
 	$("#subtitle").append(BYLINE);	
 
-	_map = new esri.Map("map",{slider:false,wrapAround180:false});
-	_map.addLayer(new esri.layers.ArcGISTiledMapServiceLayer(BASEMAP_URL));
+	_map = new esri.Map("map",{slider:false,wrapAround180:false,basemap:"satellite"});
 
 	if(_map.loaded){
 		initMap();
@@ -105,6 +105,25 @@ function initMap() {
 		}	
 	}
 	
+	
+	_layerTestSites = new esri.layers.GraphicsLayer();
+
+	var query = new esri.tasks.Query();
+	query.where = "1 = 1";
+	query.returnGeometry = true;
+	query.outFields = ["*"];
+
+	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
+	queryTask.execute(query, function(result){
+		$.each(result.features, function(index, value) {
+			value.setSymbol(createSymbol(4,[255,0,0],1))
+			_layerTestSites.add(value)
+		});
+		_map.addLayer(_layerTestSites);
+		_map.setExtent(getGraphicsExtent(_layerTestSites.graphics));
+		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
+	});		
+	
 	/*
 	
 	use this for layer interactivity
@@ -115,8 +134,16 @@ function initMap() {
 	*/
 	
 	handleWindowResize();
-	$("#whiteOut").fadeOut();
 	
+}
+
+createSymbol = function(size, rgb, opacity)
+{
+	return new esri.symbol.SimpleMarkerSymbol(
+				esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, size,
+				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(rgb), 2),
+				new dojo.Color(rgb.concat([opacity]))
+			);	
 }
 
 /*
