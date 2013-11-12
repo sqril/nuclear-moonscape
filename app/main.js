@@ -29,6 +29,7 @@ var _layerBottom;
 var _layerTop;
 
 var _locations;
+var _year = 1950;
 
 /*
 
@@ -74,9 +75,18 @@ function init() {
         _map.setExtent(_homeExtent);
     });
 	
-	$("#years").change(function(e) {
-        symbolize();
-    });
+	$("#slider-vertical").slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 39,
+		value: 49,
+		slide: function(event, ui) {
+			_year = 1989 - ui.value;
+			$("#year").html(_year);
+			symbolize();
+		}
+	});	
 	
 	_map = new esri.Map("map",{slider:false,wrapAround180:false,basemap:"satellite"});
 
@@ -151,8 +161,8 @@ function symbolize()
 	_layerBottom.clear();
 	_layerTop.clear();
 	
-	var year_begin = parseInt($("#years").val().split(",")[0]);
-	var year_end = parseInt($("#years").val().split(",")[1]);
+	var year_begin = _year;
+	var year_end = _year;
 	var color;
 	var opacity;
 	$.each(_locations, function(index, value) {
@@ -279,4 +289,5 @@ function handleWindowResize() {
 	*/
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
+	$("#slider-vertical").height($("#middle").height() - parseInt($("#middle").css("padding-top")) - $("#year").height() - 100);
 }
