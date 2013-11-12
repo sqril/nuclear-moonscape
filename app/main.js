@@ -81,7 +81,7 @@ function init() {
 		min: 0,
 		max: 39,
 		value: 49,
-		slide: function(event, ui) {
+		change: function(event, ui) {
 			_year = 1989 - ui.value;
 			$("#year").html(_year);
 			symbolize();
