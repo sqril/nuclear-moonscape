@@ -28,6 +28,9 @@ var _isIE = (navigator.appVersion.indexOf("MSIE") > -1);
 var _isEmbed = false;
 
 var _layerTestSites;
+var _layerTop;
+
+var _locations;
 
 /*
 
@@ -111,6 +114,10 @@ function initMap() {
 	
 	
 	_layerTestSites = new esri.layers.GraphicsLayer();
+	_map.addLayer(_layerTestSites);
+
+	_layerTop = new esri.layers.GraphicsLayer();
+	_map.addLayer(_layerTop);
 
 	var query = new esri.tasks.Query();
 	query.where = "1 = 1";
@@ -119,19 +126,19 @@ function initMap() {
 
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
-		$.each(result.features, function(index, value) {
-			_layerTestSites.add(value)
-		});
+		_locations = result.features;
 		symbolize();
-		_map.addLayer(_layerTestSites);
-		_map.setExtent(getGraphicsExtent(_layerTestSites.graphics));
+		_map.setExtent(getGraphicsExtent(_locations));
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
-	
 	
 	dojo.connect(_layerTestSites, "onMouseOver", layerTestSites_onMouseOver);
 	dojo.connect(_layerTestSites, "onMouseOut", layerTestSites_onMouseOut);
 	dojo.connect(_layerTestSites, "onClick", layerTestSites_onClick);		
+
+	dojo.connect(_layerTop, "onMouseOver", layerTestSites_onMouseOver);
+	dojo.connect(_layerTop, "onMouseOut", layerTestSites_onMouseOut);
+	dojo.connect(_layerTop, "onClick", layerTestSites_onClick);		
 	
 	handleWindowResize();
 	
@@ -139,11 +146,16 @@ function initMap() {
 
 function symbolize()
 {
+	
+	_layerTestSites.clear();
+	_layerTop.clear();
+	
 	var year_begin = parseInt($("#years").val().split(",")[0]);
 	var year_end = parseInt($("#years").val().split(",")[1]);
 	var color;
 	var opacity;
-	$.each(_layerTestSites.graphics, function(index, value) {
+	$.each(_locations, function(index, value) {
+		console.log(value);
 		if (
 			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
 			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
@@ -151,15 +163,19 @@ function symbolize()
 		{
 			color = [255,0,0];
 			opacity = 1;
+			_layerTop.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
 			color = [119,31,31];
 			opacity = 0.50;
+			_layerTestSites.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) > year_end) {
 			color = [190,190,190];
 			opacity = 0.37;
+			_layerTestSites.add(value);			
 		} else {
 			color = [0,0,0];
 			opacity = 1;
+			_layerTestSites.add(value);			
 		}
 		value.setSymbol(createSymbol(10,color,opacity));
 	});	
