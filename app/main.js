@@ -27,7 +27,7 @@ var _isMobile = isMobile();
 var _isIE = (navigator.appVersion.indexOf("MSIE") > -1);
 var _isEmbed = false;
 
-var _layerTestSites;
+var _layerBottom;
 var _layerTop;
 
 var _locations;
@@ -113,8 +113,8 @@ function initMap() {
 	}
 	
 	
-	_layerTestSites = new esri.layers.GraphicsLayer();
-	_map.addLayer(_layerTestSites);
+	_layerBottom = new esri.layers.GraphicsLayer();
+	_map.addLayer(_layerBottom);
 
 	_layerTop = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerTop);
@@ -132,13 +132,13 @@ function initMap() {
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
 	
-	dojo.connect(_layerTestSites, "onMouseOver", layerTestSites_onMouseOver);
-	dojo.connect(_layerTestSites, "onMouseOut", layerTestSites_onMouseOut);
-	dojo.connect(_layerTestSites, "onClick", layerTestSites_onClick);		
+	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
+	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
+	dojo.connect(_layerBottom, "onClick", layer_onClick);		
 
-	dojo.connect(_layerTop, "onMouseOver", layerTestSites_onMouseOver);
-	dojo.connect(_layerTop, "onMouseOut", layerTestSites_onMouseOut);
-	dojo.connect(_layerTop, "onClick", layerTestSites_onClick);		
+	dojo.connect(_layerTop, "onMouseOver", layer_onMouseOver);
+	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
+	dojo.connect(_layerTop, "onClick", layer_onClick);		
 	
 	handleWindowResize();
 	
@@ -147,7 +147,7 @@ function initMap() {
 function symbolize()
 {
 	
-	_layerTestSites.clear();
+	_layerBottom.clear();
 	_layerTop.clear();
 	
 	var year_begin = parseInt($("#years").val().split(",")[0]);
@@ -167,15 +167,15 @@ function symbolize()
 		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
 			color = [119,31,31];
 			opacity = 0.50;
-			_layerTestSites.add(value);
+			_layerBottom.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) > year_end) {
 			color = [190,190,190];
 			opacity = 0.37;
-			_layerTestSites.add(value);			
+			_layerBottom.add(value);			
 		} else {
 			color = [0,0,0];
 			opacity = 1;
-			_layerTestSites.add(value);			
+			_layerBottom.add(value);			
 		}
 		value.setSymbol(createSymbol(10,color,opacity));
 	});	
@@ -191,7 +191,7 @@ createSymbol = function(size, rgb, opacity)
 }
 
 
-function layerTestSites_onMouseOver(event) 
+function layer_onMouseOver(event) 
 {
 	if (_isMobile) return;
 	var graphic = event.graphic;
@@ -209,7 +209,7 @@ function layerTestSites_onMouseOver(event)
 }
 
 
-function layerTestSites_onMouseOut(event) 
+function layer_onMouseOut(event) 
 {
 	var graphic = event.graphic;
 	graphic.setSymbol(graphic.symbol.setSize(10));
@@ -223,7 +223,7 @@ function layerTestSites_onMouseOut(event)
 }
 
 
-function layerTestSites_onClick(event) 
+function layer_onClick(event) 
 {
 	/*
 	$("#hoverInfo").hide();
