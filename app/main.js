@@ -7,8 +7,6 @@ dojo.require("esri.map");
 ***************** begin config section ****************
 *******************************************************/
 
-var TITLE = "This is the title."
-var BYLINE = "This is the byline"
 var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
 
 /******************************************************
@@ -80,9 +78,6 @@ function init() {
         symbolize();
     });
 	
-	$("#title").append(TITLE);
-	$("#subtitle").append(BYLINE);	
-
 	_map = new esri.Map("map",{slider:false,wrapAround180:false,basemap:"satellite"});
 
 	if(_map.loaded){
@@ -128,7 +123,14 @@ function initMap() {
 	queryTask.execute(query, function(result){
 		_locations = result.features;
 		symbolize();
-		_map.setExtent(getGraphicsExtent(_locations));
+		setTimeout(function(){
+				var extent = getGraphicsExtent(_locations);
+				extent = extent.expand(1.2);
+				_map.setExtent(extent);
+				if (!_map.extent.contains(extent)) {
+					_map.setLevel(_map.level - 1);
+				}
+			},500);
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
 	
@@ -155,7 +157,6 @@ function symbolize()
 	var color;
 	var opacity;
 	$.each(_locations, function(index, value) {
-		console.log(value);
 		if (
 			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
 			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
@@ -277,7 +278,6 @@ function handleWindowResize() {
 	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
 	else $("#header").height(115);
 	*/
-	$("#map").height($("body").height() - $("#header").height());
-	$("#map").width($("body").width());
+	$("#map").width($("body").width() - $("#left").width());
 	_map.resize();
 }

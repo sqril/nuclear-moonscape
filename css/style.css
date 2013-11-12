@@ -52,7 +52,6 @@ a:hover{
 }
 	  
 #header {
-	height:115px;
 	background:#444;
 	color:#fff;
 	margin:0;
@@ -62,8 +61,8 @@ a:hover{
 #headerText{
 	padding-top:20px;
 	padding-left:25px;
-	width:80%;
-	float:left;
+	padding-right:25px;
+	padding-bottom:20px;
 }
 
 #title {
@@ -71,10 +70,6 @@ a:hover{
 	font-weight:bold;
 	text-align:left;
 	margin-top:0px;
-	white-space: nowrap;  
-	overflow: hidden;  
-	text-overflow: ellipsis;
-	-o-text-overflow:ellipsis;
 }
 
 #subtitle {
@@ -86,10 +81,9 @@ a:hover{
 }
 
 #logoArea{
-	float:right;
-	padding-top:25px;
+	padding-left:25px;
 	padding-right:25px;
-	text-align:right;
+	overflow:hidden;
 }
 
 #social{
@@ -115,12 +109,14 @@ a:hover{
 }
 
 #map {
-	position:relative;
+	position:absolute;
+	right:0;
 	border:none;
 	padding:0;
 	height:100%;
 	width:100%;
 	overflow:hidden;
+	background-image:url(../resources/images/background.jpg);
 }
 
 #hoverInfo{
