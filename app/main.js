@@ -73,6 +73,10 @@ function init() {
         _map.setExtent(_homeExtent);
     });
 	
+	$("#years").change(function(e) {
+        symbolize();
+    });
+	
 	$("#title").append(TITLE);
 	$("#subtitle").append(BYLINE);	
 
@@ -116,9 +120,9 @@ function initMap() {
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
 		$.each(result.features, function(index, value) {
-			value.setSymbol(createSymbol(7,[255,0,0],1))
 			_layerTestSites.add(value)
 		});
+		symbolize();
 		_map.addLayer(_layerTestSites);
 		_map.setExtent(getGraphicsExtent(_layerTestSites.graphics));
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
@@ -133,11 +137,39 @@ function initMap() {
 	
 }
 
+function symbolize()
+{
+	var year_begin = parseInt($("#years").val().split(",")[0]);
+	var year_end = parseInt($("#years").val().split(",")[1]);
+	var color;
+	var opacity;
+	$.each(_layerTestSites.graphics, function(index, value) {
+		if (
+			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
+			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
+			) 
+		{
+			color = [255,0,0];
+			opacity = 1;
+		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
+			color = [119,31,31];
+			opacity = 0.50;
+		} else if (parseInt(value.attributes.Date_Converted_Year) > year_end) {
+			color = [190,190,190];
+			opacity = 0.37;
+		} else {
+			color = [0,0,0];
+			opacity = 1;
+		}
+		value.setSymbol(createSymbol(10,color,opacity));
+	});	
+}
+
 createSymbol = function(size, rgb, opacity)
 {
 	return new esri.symbol.SimpleMarkerSymbol(
 				esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, size,
-				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,0]), 2),
+				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,0].concat([opacity])), 2),
 				new dojo.Color(rgb.concat([opacity]))
 			);	
 }
@@ -148,7 +180,7 @@ function layerTestSites_onMouseOver(event)
 	if (_isMobile) return;
 	var graphic = event.graphic;
 	_map.setMapCursor("pointer");
-	graphic.setSymbol(createSymbol(9,[255,0,0],1));
+	graphic.setSymbol(graphic.symbol.setSize(12));
 	/*
 	if ($.inArray(graphic, _selected) == -1) {
 		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.medium));
@@ -164,7 +196,7 @@ function layerTestSites_onMouseOver(event)
 function layerTestSites_onMouseOut(event) 
 {
 	var graphic = event.graphic;
-	graphic.setSymbol(createSymbol(7,[255,0,0],1))	
+	graphic.setSymbol(graphic.symbol.setSize(10));
 	_map.setMapCursor("default");
 	$("#hoverInfo").hide();
 	/*
@@ -225,9 +257,10 @@ function hoverInfoPos(x,y){
 
 
 function handleWindowResize() {
+	/*
 	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
 	else $("#header").height(115);
-	
+	*/
 	$("#map").height($("body").height() - $("#header").height());
 	$("#map").width($("body").width());
 	_map.resize();
