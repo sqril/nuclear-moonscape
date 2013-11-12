@@ -123,13 +123,12 @@ function initMap() {
 	queryTask.execute(query, function(result){
 		_locations = result.features;
 		symbolize();
+		// extent adjustment needs to be on a slight lag to give
+		// browser chance to deal with initial sizing
 		setTimeout(function(){
 				var extent = getGraphicsExtent(_locations);
 				extent = extent.expand(1.2);
 				_map.setExtent(extent);
-				if (!_map.extent.contains(extent)) {
-					_map.setLevel(_map.level - 1);
-				}
 			},500);
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
@@ -278,6 +277,6 @@ function handleWindowResize() {
 	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
 	else $("#header").height(115);
 	*/
-	$("#map").width($("body").width() - $("#left").width());
+	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 }
