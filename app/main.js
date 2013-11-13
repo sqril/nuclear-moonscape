@@ -195,13 +195,13 @@ function symbolize()
 			opacity = 1;
 			_layerTop.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
-			color = [119,31,31];
-			opacity = 0.50;
+			color = [190,190,190];
+			opacity = 0.37;
 			_layerBottom.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) > year_end) {
 			color = [190,190,190];
 			opacity = 0.37;
-			_layerBottom.add(value);			
+			//_layerBottom.add(value);			
 		} else {
 			color = [0,0,0];
 			opacity = 1;
