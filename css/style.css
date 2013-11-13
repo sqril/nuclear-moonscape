@@ -150,3 +150,12 @@ a:hover{
 	cursor:pointer;
 }
 
+.tick {
+	width:50%;
+	margin-left:25%;
+	height:2px;
+	background-color:#999;
+	position:absolute;
+	margin-top:-1px;
+}
+

@@ -309,5 +309,5 @@ function handleWindowResize() {
 	*/
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
-	$("#slider-vertical").height($("#middle").height() - parseInt($("#middle").css("padding-top")) - $("#year").height() - 100);
+	$("#slider-case").height($("#middle").height() - $("#year-case").height() - 10);
 }
