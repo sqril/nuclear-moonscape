@@ -29,7 +29,8 @@ var _layerBottom;
 var _layerTop;
 
 var _locations;
-var _year = 1950;
+var _year_begin = 1950;
+var _year_end = 1955;
 
 /*
 
@@ -79,11 +80,45 @@ function init() {
 		orientation: "vertical",
 		range: "min",
 		min: 0,
-		max: 39,
-		value: 49,
+		max: 7,
+		value: 7,
 		change: function(event, ui) {
-			_year = 1989 - ui.value;
-			$("#year").html(_year);
+			switch(ui.value) {
+				case 7:
+					_year_begin = 1950;
+					_year_end = 1955;
+					break;
+				case 6:
+					_year_begin = 1956;
+					_year_end = 1960;
+					break;
+				case 5:
+					_year_begin = 1961;
+					_year_end = 1965;
+					break;
+				case 4:
+					_year_begin = 1966;
+					_year_end = 1970;
+					break;
+				case 3:
+					_year_begin = 1971;
+					_year_end = 1975;
+					break;
+				case 2:
+					_year_begin = 1976;
+					_year_end = 1980;
+					break;
+				case 1:
+					_year_begin = 1981;
+					_year_end = 1985;
+					break;
+				case 0:
+					_year_begin = 1986;
+					_year_end = 1989;
+					break;
+				default:
+			}
+			$("#year").html(_year_begin+" - "+_year_end);
 			symbolize();
 		}
 	});	
@@ -101,21 +136,6 @@ function init() {
 }
 
 function initMap() {
-	
-	// if _homeExtent hasn't been set, then default to the initial extent
-	// of the web map.  On the other hand, if it HAS been set AND we're using
-	// the embed option, we need to reset the extent (because the map dimensions
-	// have been changed on the fly).
-
-	if (!_homeExtent) {
-		_homeExtent = _map.extent;
-	} else {
-		if (_isEmbed) {
-			setTimeout(function(){
-				_map.setExtent(_homeExtent)
-			},500);
-		}	
-	}
 	
 	
 	_layerBottom = new esri.layers.GraphicsLayer();
@@ -136,9 +156,9 @@ function initMap() {
 		// extent adjustment needs to be on a slight lag to give
 		// browser chance to deal with initial sizing
 		setTimeout(function(){
-				var extent = getGraphicsExtent(_locations);
-				extent = extent.expand(1.2);
-				_map.setExtent(extent);
+				_homeExtent = getGraphicsExtent(_locations);
+				_homeExtent = _homeExtent.expand(1.2);
+				_map.setExtent(_homeExtent);
 			},500);
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
@@ -161,8 +181,8 @@ function symbolize()
 	_layerBottom.clear();
 	_layerTop.clear();
 	
-	var year_begin = _year;
-	var year_end = _year;
+	var year_begin = _year_begin;
+	var year_end = _year_end;
 	var color;
 	var opacity;
 	$.each(_locations, function(index, value) {
