@@ -29,8 +29,18 @@ var _layerBottom;
 var _layerTop;
 
 var _locations;
-var _year_begin = 1950;
-var _year_end = 1955;
+var _index = 0;
+
+var _table = [
+	{year_begin:1950,year_end:1955},
+	{year_begin:1956,year_end:1960},
+	{year_begin:1961,year_end:1965},
+	{year_begin:1966,year_end:1970},
+	{year_begin:1971,year_end:1975},
+	{year_begin:1976,year_end:1980},
+	{year_begin:1981,year_end:1985},
+	{year_begin:1986,year_end:1989}		
+]
 
 /*
 
@@ -76,59 +86,6 @@ function init() {
         _map.setExtent(_homeExtent);
     });
 	
-	$("#slider-vertical").slider({
-		orientation: "vertical",
-		range: "min",
-		min: 0,
-		max: 7,
-		value: 6,
-		slide: function(event, ui) {
-			if (ui.value > 6) return false;
-		},
-		change: function(event, ui) {
-			switch(ui.value) {
-				case 6:
-					_year_begin = 1950;
-					_year_end = 1955;
-					break;
-				case 5:
-					_year_begin = 1956;
-					_year_end = 1960;
-					break;
-				case 4:
-					_year_begin = 1961;
-					_year_end = 1965;
-					break;
-				case 3:
-					_year_begin = 1966;
-					_year_end = 1970;
-					break;
-				case 2:
-					_year_begin = 1971;
-					_year_end = 1975;
-					break;
-				case 1:
-					_year_begin = 1976;
-					_year_end = 1980;
-					break;
-				case 0:
-					_year_begin = 1981;
-					_year_end = 1985;
-					break;
-					/*
-				case 0:
-					_year_begin = 1986;
-					_year_end = 1989;
-					break;
-					*/
-				default:
-			}
-			$("#year").html(_year_begin+" - "+_year_end);
-			shade(ui.value);
-			symbolize();
-		}
-	});	
-	
 	_map = new esri.Map("map",{slider:false,wrapAround180:false,basemap:"satellite"});
 
 	if(_map.loaded){
@@ -158,7 +115,9 @@ function initMap() {
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
 		_locations = result.features;
+		shade();
 		symbolize();
+		displayYears();
 		// extent adjustment needs to be on a slight lag to give
 		// browser chance to deal with initial sizing
 		setTimeout(function(){
@@ -175,52 +134,70 @@ function initMap() {
 
 	dojo.connect(_layerTop, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
-	dojo.connect(_layerTop, "onClick", layer_onClick);		
+	dojo.connect(_layerTop, "onClick", layer_onClick);
+
+
+	var swatch = $("<div></div>");
+	$(swatch).attr("id", "swatch");
+	$(swatch).css("position", "absolute");
+	$(swatch).css("top", "0%");
+	$(swatch).css("right", "0px");
+	$(swatch).css("width", "25px");
+	$(swatch).css("height", ((1 / _table.length) * 100)+"%");
+	$(swatch).css("background-color", "#FF0000");
+	$(swatch).css("opacity", 0.5);
+		
+	$("#slider-case").append(swatch);
+
+	var tick;
+	$.each(_table, function(index, value) {
+		tick = $("<div></div>");
+		$(tick).addClass("tick");
+		$(tick).css("top", ((index / _table.length) * 100)+"%");
+		$("#slider-case").append(tick);
+	});
+	
+	$("#slider-case").click(function(e) {
+        if (!(e.target == e.currentTarget)) return false;
+        _index = parseInt((e.offsetY / $("#slider-case").height())*_table.length);
+		shade();
+		symbolize();
+		displayYears()
+    });	
+	
+	$(".tick").click(function(e) {
+		var _index = $.inArray(e.target,$(".tick"));
+		if (_index != 0) index--;
+        shade();
+		symbolize();
+		displayYears()
+   });
 	
 	handleWindowResize();
 	
 }
 
-function shade(step)
+function displayYears()
 {
-	var val;
-	switch(step)
-	{
-		case 6:
-			val = "0%";
-			break;
-		case 5:
-			val = "14.25%";
-			break;
-		case 4:
-			val = "28.5%";
-			break;
-		case 3:
-			val = "42.75%";
-			break;
-		case 2:
-			val = "57.25%";
-			break;
-		case 1:
-			val = "71.5%";
-			break;
-		case 0:
-			val = "85.75%";
-			break;
-		default:
-	}
-	$("#shade").css("top", val);
-	
+	var year_begin = _table[_index].year_begin;
+	var year_end = _table[_index].year_end;
+	$("#year").html(year_begin+" - "+year_end);		
+}
+
+function shade()
+{
+	$("#swatch").css("top", ((_index / _table.length) * 100)+"%");
 }
 
 function symbolize()
 {
+
+	var year_begin = _table[_index].year_begin;
+	var year_end = _table[_index].year_end;
 	
 	_layerBottom.clear();
 	_layerTop.clear();
-	
-	var year_begin = _year_begin;
-	var year_end = _year_end;
+
 	var color;
 	var opacity;
 	$.each(_locations, function(index, value) {
