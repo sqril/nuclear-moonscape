@@ -81,44 +81,50 @@ function init() {
 		range: "min",
 		min: 0,
 		max: 7,
-		value: 7,
+		value: 6,
+		slide: function(event, ui) {
+			if (ui.value > 6) return false;
+		},
 		change: function(event, ui) {
 			switch(ui.value) {
-				case 7:
+				case 6:
 					_year_begin = 1950;
 					_year_end = 1955;
 					break;
-				case 6:
+				case 5:
 					_year_begin = 1956;
 					_year_end = 1960;
 					break;
-				case 5:
+				case 4:
 					_year_begin = 1961;
 					_year_end = 1965;
 					break;
-				case 4:
+				case 3:
 					_year_begin = 1966;
 					_year_end = 1970;
 					break;
-				case 3:
+				case 2:
 					_year_begin = 1971;
 					_year_end = 1975;
 					break;
-				case 2:
+				case 1:
 					_year_begin = 1976;
 					_year_end = 1980;
 					break;
-				case 1:
+				case 0:
 					_year_begin = 1981;
 					_year_end = 1985;
 					break;
+					/*
 				case 0:
 					_year_begin = 1986;
 					_year_end = 1989;
 					break;
+					*/
 				default:
 			}
 			$("#year").html(_year_begin+" - "+_year_end);
+			shade(ui.value);
 			symbolize();
 		}
 	});	
@@ -172,6 +178,38 @@ function initMap() {
 	dojo.connect(_layerTop, "onClick", layer_onClick);		
 	
 	handleWindowResize();
+	
+}
+
+function shade(step)
+{
+	var val;
+	switch(step)
+	{
+		case 6:
+			val = "0%";
+			break;
+		case 5:
+			val = "14.25%";
+			break;
+		case 4:
+			val = "28.5%";
+			break;
+		case 3:
+			val = "42.75%";
+			break;
+		case 2:
+			val = "57.25%";
+			break;
+		case 1:
+			val = "71.5%";
+			break;
+		case 0:
+			val = "85.75%";
+			break;
+		default:
+	}
+	$("#shade").css("top", val);
 	
 }
 
@@ -233,7 +271,7 @@ function layer_onMouseOver(event)
 	}
 	*/
 	if (!_isIE) moveGraphicToFront(graphic);	
-	$("#hoverInfo").html("<b>"+graphic.attributes.Name+"</b>");
+	$("#hoverInfo").html("<b>"+graphic.attributes.Date_Converted_Year+"</b>");
 	var pt = _map.toScreen(graphic.geometry);
 	hoverInfoPos(pt.x,pt.y);	
 }
