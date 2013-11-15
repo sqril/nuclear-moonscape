@@ -157,5 +157,10 @@ a:hover{
 	background-color:#999;
 	position:absolute;
 	margin-top:-1px;
+	text-align:center;
+}
+
+.tickLabel {
+	margin-top:-14px;
 }
 

@@ -154,6 +154,11 @@ function initMap() {
 		tick = $("<div></div>");
 		$(tick).addClass("tick");
 		$(tick).css("top", ((index / _table.length) * 100)+"%");
+		if (index > 0) {
+			$(tick).append("<div class='tickLabel'>"+(_table[index].year_begin-1)+"</div>");
+		} else {
+			$(tick).append("<div class='tickLabel'>1950</div>");
+		}
 		$("#slider-case").append(tick);
 	});
 	
@@ -166,8 +171,8 @@ function initMap() {
     });	
 	
 	$(".tick").click(function(e) {
-		var _index = $.inArray(e.target,$(".tick"));
-		if (_index != 0) index--;
+		_index = $.inArray(e.currentTarget, $(".tick"));
+		if (_index != 0) _index--;
         shade();
 		symbolize();
 		displayYears()
@@ -186,7 +191,9 @@ function displayYears()
 
 function shade()
 {
-	$("#swatch").css("top", ((_index / _table.length) * 100)+"%");
+	var top = (_index / _table.length) * 100;
+	top = top+"%";
+	$("#swatch").animate({top: top});
 }
 
 function symbolize()
