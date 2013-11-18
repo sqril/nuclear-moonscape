@@ -115,9 +115,7 @@ function initMap() {
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
 		_locations = result.features;
-		shade();
-		symbolize();
-		displayYears();
+		situate();
 		// extent adjustment needs to be on a slight lag to give
 		// browser chance to deal with initial sizing
 		setTimeout(function(){
@@ -165,17 +163,13 @@ function initMap() {
 	$("#slider-case").click(function(e) {
         if (!(e.target == e.currentTarget)) return false;
         _index = parseInt((e.offsetY / $("#slider-case").height())*_table.length);
-		shade();
-		symbolize();
-		displayYears()
+		situate();
     });	
 	
 	$(".tick").click(function(e) {
 		_index = $.inArray(e.currentTarget, $(".tick"));
 		if (_index != 0) _index--;
-        shade();
-		symbolize();
-		displayYears()
+		situate();
    });
    
 	$("#swatch").draggable({
@@ -184,14 +178,22 @@ function initMap() {
 		containment: "parent",
 		stop: function() {
 			_index = findClosestTimePoint(parseInt($("#swatch").css("top")));
-			shade();
-			symbolize();
-			displayYears()
+			situate();
 		}
 	});
 	
 	handleWindowResize();
 	
+}
+
+function situate()
+{
+	var top = (_index / _table.length) * 100;
+	top = top+"%";
+	$("#swatch").animate({top: top}, "linear", function(){
+		symbolize();
+		displayYears();
+	});
 }
 
 function findClosestTimePoint(pixelY)
@@ -229,13 +231,6 @@ function displayYears()
 	var year_begin = _table[_index].year_begin;
 	var year_end = _table[_index].year_end;
 	$("#year").html(year_begin+" - "+year_end);		
-}
-
-function shade()
-{
-	var top = (_index / _table.length) * 100;
-	top = top+"%";
-	$("#swatch").animate({top: top});
 }
 
 function symbolize()
