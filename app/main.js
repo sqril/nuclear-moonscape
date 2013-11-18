@@ -177,10 +177,52 @@ function initMap() {
 		symbolize();
 		displayYears()
    });
+   
+	$("#swatch").draggable({
+		cursor: "default",
+		axis: "y",
+		containment: "parent",
+		stop: function() {
+			_index = findClosestTimePoint(parseInt($("#swatch").css("top")));
+			shade();
+			symbolize();
+			displayYears()
+		}
+	});
 	
 	handleWindowResize();
 	
 }
+
+function findClosestTimePoint(pixelY)
+{
+	var top;
+	var minDiff = Number.MAX_VALUE;
+	var diff;
+	var closest;
+	var closestTop;
+	$.each($(".tick"), function(index, value){
+		top = parseTop(value);
+		diff = Math.abs(pixelY - top);
+		if (diff < minDiff) {
+			minDiff = diff;
+			closest = value;
+			closestTop = top;
+		}
+	});
+	return $.inArray(closest,$(".tick"));
+}
+
+function parseTop(value) {
+	var top = $(value).css("top");
+	if (top.indexOf("%") > -1) {
+		top = parseInt((parseInt($(value).css("top")) / 100) * parseInt($("#line").height()));
+	} else {
+		top = parseInt($(value).css("top"));			
+	}
+	return top;
+}
+
 
 function displayYears()
 {
