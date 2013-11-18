@@ -150,6 +150,11 @@ a:hover{
 	cursor:pointer;
 }
 
+#slider-case {
+	position:relative;
+	cursor:pointer;
+}
+
 .tick {
 	width:50%;
 	margin-left:25%;
@@ -170,4 +175,5 @@ a:hover{
 	width:25px;
 	background-color:#ff0000;
 	opacity:0.5;
+	cursor:ns-resize;
 }
