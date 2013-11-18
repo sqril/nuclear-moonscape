@@ -134,9 +134,7 @@ function initMap() {
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 
-
-	var swatch = $("<div id='swatch'></div>");
-	$(swatch).css("height", ((1 / _table.length) * 100)+"%");
+	$("#swatch").css("height", ((1 / _table.length) * 100)+"%");
 	$("#slider-case").append(swatch);
 
 	var tick;
