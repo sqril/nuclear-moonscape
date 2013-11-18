@@ -172,6 +172,8 @@ function initMap() {
 		}
 	});
 	
+	$(document).keydown(onKeyDown);
+	
 	handleWindowResize();
 	
 }
@@ -184,6 +186,22 @@ function situate()
 		symbolize();
 		displayYears();
 	});
+}
+
+function onKeyDown(e)
+{
+	
+	if ((e.keyCode != 38) && (e.keyCode != 40)) {
+		return;
+	}
+
+	_index = (e.keyCode == 40) ? _index + 1 : _index - 1;
+
+	if (_index > $(".tick").length - 1) _index = $(".tick").length - 1;
+	if (_index < 0) _index = 0; 
+
+	situate();
+	
 }
 
 function findClosestTimePoint(pixelY)
