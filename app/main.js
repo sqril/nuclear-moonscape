@@ -135,16 +135,8 @@ function initMap() {
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 
 
-	var swatch = $("<div></div>");
-	$(swatch).attr("id", "swatch");
-	$(swatch).css("position", "absolute");
-	$(swatch).css("top", "0%");
-	$(swatch).css("right", "0px");
-	$(swatch).css("width", "25px");
+	var swatch = $("<div id='swatch'></div>");
 	$(swatch).css("height", ((1 / _table.length) * 100)+"%");
-	$(swatch).css("background-color", "#FF0000");
-	$(swatch).css("opacity", 0.5);
-		
 	$("#slider-case").append(swatch);
 
 	var tick;

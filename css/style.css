@@ -164,3 +164,10 @@ a:hover{
 	margin-top:-14px;
 }
 
+#swatch {
+	position:absolute;
+	right:0px;
+	width:25px;
+	background-color:#ff0000;
+	opacity:0.5;
+}
