@@ -146,7 +146,6 @@ function initMap() {
 		segment = $("<div></div>");
 		$(segment).addClass("segment");
 		$(segment).css("top", ((index / _table.length) * 100)+"%");
-		$(segment).width(50);
 		
 		filler = $("<div></div>");
 		$(filler).addClass("segment-filler");
@@ -179,6 +178,16 @@ function initMap() {
 		if (_index != 0) _index--;
 		situate();
    });
+  
+   $(".segment").click(function(e) {
+		_index = $.inArray(e.currentTarget, $(".segment"));
+		situate();
+	});  
+   
+   $(".segment-filler").click(function(e) {
+		_index = $.inArray(e.currentTarget, $(".segment-filler"));
+		situate();
+	});
    
 	$("#swatch").draggable({
 		cursor: "default",
@@ -399,4 +408,6 @@ function handleWindowResize() {
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 	$("#slider-case").height($("#middle").height() - $("#year-case").height() - 10);
+	$(".segment-filler").height($(".segment").height() - 4);
+	$("#swatch").height($(".segment-filler").height());
 }

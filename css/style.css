@@ -158,7 +158,7 @@ a:hover{
 .tick {
 	width:50%;
 	margin-left:25%;
-	height:2px;
+	height:0px;
 	background-color:#999;
 	position:absolute;
 	margin-top:-1px;
@@ -166,25 +166,26 @@ a:hover{
 }
 
 .tickLabel {
-	margin-top:-14px;
+	margin-top:-7px;
 }
 
 .segment {
 	position:absolute;
+	width:30px;
 }
 
 .segment-filler {
 	position:absolute;
-	background-color:yellow;
-	height:90%;
+	background-color:#aeaeae;
 	width:100%;
-	top:5%;
+	top:2px;
 }
 
 #swatch {
 	position:absolute;
-	right:0px;
-	width:100%;
-	background-color:#ff0000;
-	opacity:0.2;
+	left:0px;
+	width:30px;
+	background-color:#ff621d;
+	z-index:1000;
+	margin-top:2px;
 }
