@@ -174,6 +174,10 @@ function initMap() {
 	
 	$(document).keydown(onKeyDown);
 	
+	$("#test").click(function(e) {
+		alert('Maybe we should have one more discussion about what happens when you click the special events...'); 
+    });
+	
 	handleWindowResize();
 	
 }
