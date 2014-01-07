@@ -169,6 +169,18 @@ a:hover{
 	margin-top:-14px;
 }
 
+.segment {
+	position:absolute;
+}
+
+.segment-filler {
+	position:absolute;
+	background-color:yellow;
+	height:90%;
+	width:100%;
+	top:5%;
+}
+
 #swatch {
 	position:absolute;
 	right:0px;

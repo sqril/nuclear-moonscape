@@ -138,7 +138,23 @@ function initMap() {
 	$("#slider-case").append(swatch);
 
 	var tick;
+	var segment;
+	var filler;
+	
 	$.each(_table, function(index, value) {
+
+		segment = $("<div></div>");
+		$(segment).addClass("segment");
+		$(segment).css("top", ((index / _table.length) * 100)+"%");
+		$(segment).width(50);
+		
+		filler = $("<div></div>");
+		$(filler).addClass("segment-filler");
+		
+		$(segment).append(filler);
+		
+		$("#slider-case").append(segment);		
+		
 		tick = $("<div></div>");
 		$(tick).addClass("tick");
 		$(tick).css("top", ((index / _table.length) * 100)+"%");
@@ -149,6 +165,8 @@ function initMap() {
 		}
 		$("#slider-case").append(tick);
 	});
+
+	$(".segment").height((100 / _table.length)+"%");
 	
 	$("#slider-case").click(function(e) {
         if (!(e.target == e.currentTarget)) return false;
