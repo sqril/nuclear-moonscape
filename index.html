@@ -121,13 +121,15 @@
         <div id="info" style="color:white;padding:30px;overflow-y:auto"></div>
     </div>    
     <div id="middle" style="background-color:#d2d2d2;width:160px;height:100%;float:left;font-family:Arial, Helvetica, sans-serif;">
-    	<div id="year-case" style="width:100%;height:75px;text-align:center;font-size:25px;position:relative"><div id="year" style="position:absolute;top:20px;width:100%">1950 - 1955</div></div>
-        <div id="slider-case">
-        	<a style="position:absolute;top:55%;left:10px;z-index:100" id="test">Test Event</a>
-        	<div id="swatch">
-            	<div id="handle" style="height:100%;width:25px;position:absolute;right:3px;cursor:ns-resize">
-                    <img src="resources/images/PointerUp.png" style="position:absolute;top:3px"/>
-                    <img src="resources/images/PointerDown.png" style="position:absolute;bottom:3px"/>
+    	<div id="year-case" style="width:100%;height:75px;text-align:center;font-size:25px;position:relative"><div id="year" style="color:#aeaeae;position:absolute;top:20px;width:100%">1950 - 1955</div></div>
+        <div id="action-area" style="position:relative">
+            <a style="position:absolute;top:55%;left:10px;z-index:1001;cursor:pointer" id="test">Test Event</a>
+            <div id="slider-case">
+                <div id="swatch">
+                    <div id="handle" style="height:100%;width:25px;position:absolute;right:3px;cursor:ns-resize">
+                        <img src="resources/images/PointerUp.png" style="position:absolute;top:3px"/>
+                        <img src="resources/images/PointerDown.png" style="position:absolute;bottom:3px"/>
+                    </div>
                 </div>
             </div>
         </div>
