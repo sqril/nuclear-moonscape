@@ -134,76 +134,7 @@ function initMap() {
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 
-	$("#swatch").css("height", ((1 / _table.length) * 100)+"%");
-	$("#slider-case").append(swatch);
-
-	var tick;
-	var segment;
-	var filler;
-	
-	$.each(_table, function(index, value) {
-
-		segment = $("<div></div>");
-		$(segment).addClass("segment");
-		$(segment).css("top", ((index / _table.length) * 100)+"%");
-		
-		filler = $("<div></div>");
-		$(filler).addClass("segment-filler");
-		
-		$(segment).append(filler);
-		
-		$("#slider-case").append(segment);		
-		
-		tick = $("<div></div>");
-		$(tick).addClass("tick");
-		$(tick).css("top", ((index / _table.length) * 100)+"%");
-		if (index > 0) {
-			$(tick).append("<div class='tickLabel'>"+(_table[index].year_begin-1)+"</div>");
-		} else {
-			$(tick).append("<div class='tickLabel'>1950</div>");
-		}
-		$("#slider-case").append(tick);
-	});
-
-	$(".segment").height((100 / _table.length)+"%");
-	
-	$("#slider-case").click(function(e) {
-        if (!(e.target == e.currentTarget)) return false;
-        _index = parseInt((e.offsetY / $("#slider-case").height())*_table.length);
-		situate();
-    });	
-	
-	$(".tick").click(function(e) {
-		_index = $.inArray(e.currentTarget, $(".tick"));
-		if (_index != 0) _index--;
-		situate();
-   });
-  
-   $(".segment").click(function(e) {
-		_index = $.inArray(e.currentTarget, $(".segment"));
-		situate();
-	});  
-   
-   $(".segment-filler").click(function(e) {
-		_index = $.inArray(e.currentTarget, $(".segment-filler"));
-		situate();
-	});
-   
-	$("#swatch").draggable({
-		cursor: "default",
-		axis: "y",
-		containment: "parent",
-		stop: function() {
-			_index = findClosestTimePoint(parseInt($("#swatch").css("top")));
-			situate();
-		}
-	});
-	
 	$(document).keydown(onKeyDown);
-	
-	$("#test").click(function(e) {
-		alert('Maybe we should have one more discussion about what happens when you click the special events...'); 
-    });
 	
 	handleWindowResize();
 	
@@ -211,12 +142,8 @@ function initMap() {
 
 function situate()
 {
-	var top = (_index / _table.length) * 100;
-	top = top+"%";
-	$("#swatch").animate({top: top}, "linear", function(){
-		symbolize();
-		displayYears();
-	});
+	symbolize();
+	displayYears();
 }
 
 function onKeyDown(e)
@@ -226,44 +153,9 @@ function onKeyDown(e)
 		return;
 	}
 
-	_index = (e.keyCode == 40) ? _index + 1 : _index - 1;
-
-	if (_index > $(".tick").length - 1) _index = $(".tick").length - 1;
-	if (_index < 0) _index = 0; 
-
 	situate();
 	
 }
-
-function findClosestTimePoint(pixelY)
-{
-	var top;
-	var minDiff = Number.MAX_VALUE;
-	var diff;
-	var closest;
-	var closestTop;
-	$.each($(".tick"), function(index, value){
-		top = parseTop(value);
-		diff = Math.abs(pixelY - top);
-		if (diff < minDiff) {
-			minDiff = diff;
-			closest = value;
-			closestTop = top;
-		}
-	});
-	return $.inArray(closest,$(".tick"));
-}
-
-function parseTop(value) {
-	var top = $(value).css("top");
-	if (top.indexOf("%") > -1) {
-		top = parseInt((parseInt($(value).css("top")) / 100) * parseInt($("#line").height()));
-	} else {
-		top = parseInt($(value).css("top"));			
-	}
-	return top;
-}
-
 
 function displayYears()
 {
