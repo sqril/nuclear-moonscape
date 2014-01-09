@@ -8,6 +8,8 @@ dojo.require("esri.map");
 *******************************************************/
 
 var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
+var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com") >= 0 ? "http://storymaps.esri.com/proxy/proxy.ashx" : "http://localhost/proxy/proxy.ashx";
+var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
 /******************************************************
 ***************** end config section ******************
@@ -42,17 +44,7 @@ var _table = [
 	{year_begin:1986, year_end:1989}		
 ];
 
-var _events = [
-	{year: 1952},
-	{year: 1957},
-	{year: 1966},
-	{year: 1970},
-	{year: 1974},
-	{year: 1984},
-	{year: 1981}
-]			
-
-
+var _events;
 var _timeline;
 
 /*
@@ -118,19 +110,50 @@ function initMap() {
 	_map.addLayer(_layerBottom);
 
 	_layerTop = new esri.layers.GraphicsLayer();
-	_map.addLayer(_layerTop);
+	_map.addLayer(_layerTop);	
 	
-	_timeline = new Timeline(
-		1950,
-		1990,
-		5,
-		_events
-	);
+	var serviceCSV = new CSVService();
+	serviceCSV.process(EVENTS_SPREADSHEET_URL);
+	$(serviceCSV).bind("complete", function() {	
+		var parser = new RecordParser();
+		_events = parser.getRecs(serviceCSV.getLines());
+		
+		_timeline = new Timeline(
+			1950,
+			1990,
+			5,
+			_events
+		);
+		
+		$(_timeline).on("indexChange", function() {
+			_index = _timeline.getCurrentIndex();
+			situate();
+		});
+		
+		handleWindowResize();
 	
-	$(_timeline).on("indexChange", function() {
-		_index = _timeline.getCurrentIndex();
-		situate();
+		var query = new esri.tasks.Query();
+		query.where = "1 = 1";
+		query.returnGeometry = true;
+		query.outFields = ["*"];
+	
+		var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
+		queryTask.execute(query, function(result){
+			_locations = result.features;
+			_index = _timeline.getCurrentIndex();
+			situate();
+			// extent adjustment needs to be on a slight lag to give
+			// browser chance to deal with initial sizing
+			setTimeout(function(){
+					_homeExtent = getGraphicsExtent(_locations);
+					_homeExtent = _homeExtent.expand(1.2);
+					_map.setExtent(_homeExtent);
+				},500);
+			setTimeout(function(){$("#whiteOut").fadeOut()},1000);
+		});		
+
 	});
+	
 		
 	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
@@ -142,27 +165,6 @@ function initMap() {
 
 	$(document).keydown(onKeyDown);
 	
-	handleWindowResize();
-
-	var query = new esri.tasks.Query();
-	query.where = "1 = 1";
-	query.returnGeometry = true;
-	query.outFields = ["*"];
-
-	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
-	queryTask.execute(query, function(result){
-		_locations = result.features;
-		_index = _timeline.getCurrentIndex();
-		situate();
-		// extent adjustment needs to be on a slight lag to give
-		// browser chance to deal with initial sizing
-		setTimeout(function(){
-				_homeExtent = getGraphicsExtent(_locations);
-				_homeExtent = _homeExtent.expand(1.2);
-				_map.setExtent(_homeExtent);
-			},500);
-		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
-	});		
 	
 }
 
