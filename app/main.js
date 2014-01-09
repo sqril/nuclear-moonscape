@@ -126,6 +126,29 @@ function initMap() {
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
 	
+	var _timeline = new Timeline(
+		1950,
+		2000,
+		5,
+		[{
+			year: 1952
+		},{
+			year: 1957
+		},{
+			year: 1966
+		},{
+			year: 1970
+		},{
+			year: 1974
+		},{
+			year: 1999
+		},{
+			year: 1984
+		},{
+			year: 1981
+		}]			
+	);		
+		
 	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerBottom, "onClick", layer_onClick);		
@@ -299,7 +322,5 @@ function handleWindowResize() {
 	*/
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
-	$("#slider-case").height($("#middle").height() - $("#year-case").height() - 10);
-	$(".segment-filler").height($(".segment").height() - 4);
-	$("#swatch").height($(".segment-filler").height());
+	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
 }
