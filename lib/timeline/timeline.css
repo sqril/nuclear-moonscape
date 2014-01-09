@@ -1,0 +1,91 @@
+#timeline{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #888;
+}
+
+.period-wrapper{
+	position: relative;
+	margin: 5px 0 0;
+}
+
+.period-bar{	
+	background-color: #999;
+	width: 40px;
+	margin-left: 80px;
+	height: 100%;
+}
+
+.period-year{
+	position: absolute;
+	bottom: -13px;
+	left: 130px;
+}
+
+.period-year.first-year{
+	top: -0.5em;
+}
+
+.period-year.last-year{
+	bottom: -0.5em;
+}
+
+.event-wrapper{
+	position: absolute;
+	left: 18px;
+	margin-top: -9px;
+	cursor: pointer;
+	z-index:100;
+}
+
+.arrow-block{
+	position: absolute;
+	background-color: #999;
+	height: 18px;
+	width: 11px;
+	left: 45px;
+	top: 0;
+}
+
+.arrow-main{
+	position: absolute;
+	height: 0;
+	width: 0;
+	top: 0;
+	left: 56px;
+	border-top: 9px solid transparent;
+	border-bottom: 9px solid transparent;	
+	border-left: 17px solid #999;
+}
+
+.arrow-outline{
+	position: absolute;
+	height: 0;
+	width: 0;
+	top: 0;
+	left: 56px;
+	border-top: 12px solid transparent;
+	border-bottom: 12px solid transparent;	
+	border-left: 20px solid #ccc;
+	margin-top: -3px
+}
+
+.event-wrapper:hover .arrow-block{	
+	background-color: #ff9f1d;
+}
+
+.event-wrapper:hover .arrow-main{
+	border-left: 17px solid #ff9f1d;
+}
+
+.handle {
+	position:absolute;
+	left:80px;
+	top:40px;
+	width:40px;
+	background-color:#ff621d;
+	cursor:ns-resize;
+	opacity:0.5;
+}
