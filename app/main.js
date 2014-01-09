@@ -130,7 +130,7 @@ function initMap() {
 	
 	_timeline = new Timeline(
 		1950,
-		2000,
+		1990,
 		5,
 		[{
 			year: 1952
@@ -143,13 +143,16 @@ function initMap() {
 		},{
 			year: 1974
 		},{
-			year: 1999
-		},{
 			year: 1984
 		},{
 			year: 1981
 		}]			
-	);		
+	);
+	
+	$(_timeline).on("indexChange", function() {
+		_index = _timeline.getCurrentIndex();
+		situate();
+	});
 		
 	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
