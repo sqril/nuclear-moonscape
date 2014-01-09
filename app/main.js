@@ -40,7 +40,9 @@ var _table = [
 	{year_begin:1976,year_end:1980},
 	{year_begin:1981,year_end:1985},
 	{year_begin:1986,year_end:1989}		
-]
+];
+
+var _timeline;
 
 /*
 
@@ -126,7 +128,7 @@ function initMap() {
 		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
 	});		
 	
-	var _timeline = new Timeline(
+	_timeline = new Timeline(
 		1950,
 		2000,
 		5,
@@ -323,4 +325,5 @@ function handleWindowResize() {
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
+	if (_timeline) _timeline.updateLayout();
 }
