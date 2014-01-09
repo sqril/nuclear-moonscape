@@ -176,13 +176,13 @@ function situate()
 
 function onKeyDown(e)
 {
-	
 	if ((e.keyCode != 38) && (e.keyCode != 40)) {
 		return;
-	}
-
-	situate();
-	
+	}			
+	if (e.keyCode == 40) 
+		_timeline.stepDown() 
+	else 
+		_timeline.stepUp();	
 }
 
 function displayYears()
