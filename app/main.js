@@ -96,10 +96,10 @@ function init() {
 	_map = new esri.Map("map",{slider:false,wrapAround180:false,basemap:"satellite"});
 
 	if(_map.loaded){
-		initMap();
+		finishInit();
 	} else {
 		dojo.connect(_map,"onLoad",function(){
-			initMap();
+			finishInit();
 		});
 	}
 
@@ -108,7 +108,7 @@ function init() {
 	$(servicePeriods).bind("complete", function(){
 		var parser = new RecordParser();
 		_periods = parser.getRecs(servicePeriods.getLines());
-		initMap();
+		finishInit();
 	});
 	
 	var serviceCSV = new CSVService();
@@ -116,7 +116,7 @@ function init() {
 	$(serviceCSV).bind("complete", function() {	
 		var parser = new RecordParser();
 		_events = parser.getRecs(serviceCSV.getLines());
-		initMap();
+		finishInit();
 	});
 
 	var query = new esri.tasks.Query();
@@ -127,12 +127,12 @@ function init() {
 	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
 	queryTask.execute(query, function(result){
 		_locations = result.features;
-		initMap();
+		finishInit();
 	});
 				
 }
 
-function initMap() {
+function finishInit() {
 	
 	if (!(_map.loaded && _periods && _events && _locations)) return false;
 	
