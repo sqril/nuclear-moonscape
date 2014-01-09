@@ -9,6 +9,7 @@ dojo.require("esri.map");
 
 var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
 var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com") >= 0 ? "http://storymaps.esri.com/proxy/proxy.ashx" : "http://localhost/proxy/proxy.ashx";
+var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
 /******************************************************
@@ -45,6 +46,7 @@ var _table = [
 ];
 
 var _events;
+var _periods;
 var _timeline;
 
 /*
@@ -100,11 +102,39 @@ function init() {
 			initMap();
 		});
 	}
+
+	var servicePeriods = new CSVService();
+	servicePeriods.process(PERIODS_SPREADSHEET_URL);
+	$(servicePeriods).bind("complete", function(){
+		var parser = new RecordParser();
+		_periods = parser.getRecs(servicePeriods.getLines());
+		initMap();
+	});
 	
+	var serviceCSV = new CSVService();
+	serviceCSV.process(EVENTS_SPREADSHEET_URL);
+	$(serviceCSV).bind("complete", function() {	
+		var parser = new RecordParser();
+		_events = parser.getRecs(serviceCSV.getLines());
+		initMap();
+	});
+
+	var query = new esri.tasks.Query();
+	query.where = "1 = 1";
+	query.returnGeometry = true;
+	query.outFields = ["*"];
+
+	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
+	queryTask.execute(query, function(result){
+		_locations = result.features;
+		initMap();
+	});
+				
 }
 
 function initMap() {
 	
+	if (!(_map.loaded && _periods && _events && _locations)) return false;
 	
 	_layerBottom = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerBottom);
@@ -112,49 +142,6 @@ function initMap() {
 	_layerTop = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerTop);	
 	
-	var serviceCSV = new CSVService();
-	serviceCSV.process(EVENTS_SPREADSHEET_URL);
-	$(serviceCSV).bind("complete", function() {	
-		var parser = new RecordParser();
-		_events = parser.getRecs(serviceCSV.getLines());
-		
-		_timeline = new Timeline(
-			1950,
-			1990,
-			5,
-			_events
-		);
-		
-		$(_timeline).on("indexChange", function() {
-			_index = _timeline.getCurrentIndex();
-			situate();
-		});
-		
-		handleWindowResize();
-	
-		var query = new esri.tasks.Query();
-		query.where = "1 = 1";
-		query.returnGeometry = true;
-		query.outFields = ["*"];
-	
-		var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
-		queryTask.execute(query, function(result){
-			_locations = result.features;
-			_index = _timeline.getCurrentIndex();
-			situate();
-			// extent adjustment needs to be on a slight lag to give
-			// browser chance to deal with initial sizing
-			setTimeout(function(){
-					_homeExtent = getGraphicsExtent(_locations);
-					_homeExtent = _homeExtent.expand(1.2);
-					_map.setExtent(_homeExtent);
-				},500);
-			setTimeout(function(){$("#whiteOut").fadeOut()},1000);
-		});		
-
-	});
-	
-		
 	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerBottom, "onClick", layer_onClick);		
@@ -162,9 +149,33 @@ function initMap() {
 	dojo.connect(_layerTop, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerTop, "onClick", layer_onClick);
-
-	$(document).keydown(onKeyDown);
 	
+	_timeline = new Timeline(
+		1950,
+		1990,
+		5,
+		_events
+	);
+	
+	$(_timeline).on("indexChange", function() {
+		_index = _timeline.getCurrentIndex();
+		situate();
+	});
+	
+	handleWindowResize();
+
+	_index = _timeline.getCurrentIndex();
+	situate();
+	// extent adjustment needs to be on a slight lag to give
+	// browser chance to deal with initial sizing
+	setTimeout(function(){
+			_homeExtent = getGraphicsExtent(_locations);
+			_homeExtent = _homeExtent.expand(1.2);
+			_map.setExtent(_homeExtent);
+		},500);
+	setTimeout(function(){$("#whiteOut").fadeOut()},1000);
+	
+	$(document).keydown(onKeyDown);
 	
 }
 
