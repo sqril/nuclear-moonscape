@@ -29,18 +29,29 @@ var _layerBottom;
 var _layerTop;
 
 var _locations;
-var _index = 0;
+var _index;
 
 var _table = [
-	{year_begin:1950,year_end:1955},
-	{year_begin:1956,year_end:1960},
-	{year_begin:1961,year_end:1965},
-	{year_begin:1966,year_end:1970},
-	{year_begin:1971,year_end:1975},
-	{year_begin:1976,year_end:1980},
-	{year_begin:1981,year_end:1985},
-	{year_begin:1986,year_end:1989}		
+	{year_begin:1950, year_end:1955},
+	{year_begin:1956, year_end:1960},
+	{year_begin:1961, year_end:1965},
+	{year_begin:1966, year_end:1970},
+	{year_begin:1971, year_end:1975},
+	{year_begin:1976, year_end:1980},
+	{year_begin:1981, year_end:1985},
+	{year_begin:1986, year_end:1989}		
 ];
+
+var _events = [
+	{year: 1952},
+	{year: 1957},
+	{year: 1966},
+	{year: 1970},
+	{year: 1974},
+	{year: 1984},
+	{year: 1981}
+]			
+
 
 var _timeline;
 
@@ -108,45 +119,12 @@ function initMap() {
 
 	_layerTop = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerTop);
-
-	var query = new esri.tasks.Query();
-	query.where = "1 = 1";
-	query.returnGeometry = true;
-	query.outFields = ["*"];
-
-	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
-	queryTask.execute(query, function(result){
-		_locations = result.features;
-		situate();
-		// extent adjustment needs to be on a slight lag to give
-		// browser chance to deal with initial sizing
-		setTimeout(function(){
-				_homeExtent = getGraphicsExtent(_locations);
-				_homeExtent = _homeExtent.expand(1.2);
-				_map.setExtent(_homeExtent);
-			},500);
-		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
-	});		
 	
 	_timeline = new Timeline(
 		1950,
 		1990,
 		5,
-		[{
-			year: 1952
-		},{
-			year: 1957
-		},{
-			year: 1966
-		},{
-			year: 1970
-		},{
-			year: 1974
-		},{
-			year: 1984
-		},{
-			year: 1981
-		}]			
+		_events
 	);
 	
 	$(_timeline).on("indexChange", function() {
@@ -165,6 +143,26 @@ function initMap() {
 	$(document).keydown(onKeyDown);
 	
 	handleWindowResize();
+
+	var query = new esri.tasks.Query();
+	query.where = "1 = 1";
+	query.returnGeometry = true;
+	query.outFields = ["*"];
+
+	var queryTask = new esri.tasks.QueryTask(FEATURE_SERVICE_URL);
+	queryTask.execute(query, function(result){
+		_locations = result.features;
+		_index = _timeline.getCurrentIndex();
+		situate();
+		// extent adjustment needs to be on a slight lag to give
+		// browser chance to deal with initial sizing
+		setTimeout(function(){
+				_homeExtent = getGraphicsExtent(_locations);
+				_homeExtent = _homeExtent.expand(1.2);
+				_map.setExtent(_homeExtent);
+			},500);
+		setTimeout(function(){$("#whiteOut").fadeOut()},1000);
+	});		
 	
 }
 
