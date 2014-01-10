@@ -212,10 +212,6 @@ function finishInit() {
 		});
 	})
 	
-	$(document).click(function(e) {
- 		console.log(e.currentTarget.parent);
-    });
-	
 	handleWindowResize();
 
 	_index = _timeline.getCurrentIndex();
@@ -237,6 +233,8 @@ function situate()
 {
 	symbolize();
 	displayYears();
+	console.log(_periods[_index].description);
+	$("#period-description").html(_periods[_index].description);
 }
 
 function onKeyDown(e)
