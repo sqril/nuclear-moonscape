@@ -172,3 +172,11 @@ a:hover{
 	top:20px;
 	width:100%;
 }
+
+.infowindow-content-titlename {
+	width:70px;
+}
+
+.infowindow-content-titlecontent {
+	font-weight:bold;
+}

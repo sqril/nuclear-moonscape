@@ -336,14 +336,22 @@ function layer_onMouseOut(event)
 
 function layer_onClick(event) 
 {
-	/*
 	$("#hoverInfo").hide();
 	var graphic = event.graphic;
-	_languageID = graphic.attributes.getLanguageID();
-	$("#selectLanguage").val(_languageID);
-	changeState(STATE_SELECTION_OVERVIEW);
-	scrollToPage($.inArray($.grep($("#listThumbs").children("li"),function(n,i){return n.value == _languageID})[0], $("#listThumbs").children("li")));	
-	*/
+	
+	var table = $("<table></table>");
+	var tr;
+	$.each(["Yield","Date","Delivery","Height"],function(index, value){
+		tr = $("<tr></tr>");
+		$(tr).append("<td class='infowindow-content-titlename'>"+value+"</td>")
+		$(tr).append("<td class='infowindow-content-titlecontent'>"+graphic.attributes[value]+"</td>");
+		$(table).append(tr);
+	});
+	var content = $("<div></div>");
+	$(content).append(table);
+	_map.infoWindow.show(event.mapPoint);
+	_map.infoWindow.setTitle(graphic.attributes.Name.substring(5));
+	_map.infoWindow.setContent(content.html());
 }
 
 /*
