@@ -16,6 +16,7 @@
 	width: 40px;
 	margin-left: 80px;
 	height: 100%;
+	cursor:pointer;
 }
 
 .period-year{
@@ -87,5 +88,4 @@
 	width:40px;
 	background-color:#ff621d;
 	cursor:ns-resize;
-	opacity:0.5;
 }
