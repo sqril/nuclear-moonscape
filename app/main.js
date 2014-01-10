@@ -33,6 +33,7 @@ var _layerTop;
 
 var _locations;
 var _index;
+var _selectedEventIndex;
 
 var _table = [
 	{year_begin:1950, year_end:1955},
@@ -161,6 +162,59 @@ function finishInit() {
 		_index = _timeline.getCurrentIndex();
 		situate();
 	});
+	
+	$(_timeline).on("eventSelection", function(event, div, i) {
+		_selectedEventIndex = i;
+		$(".qtip").remove();
+		$(div).qtip({
+			content:{
+				text:_events[i].description,
+				title:_events[i].title,
+				button:true
+			},
+			show:{
+				when: false,
+				ready:true
+			},
+			hide:'unfocus',
+			style:{
+				classes: 'qtip-tipsy'
+			},
+			position:{
+				adjust:{x:30,y:-20},
+				my: 'bottom-left',
+				at:'bottom-right'
+			},
+			events:{
+				hide:function(event){_selectedEventIndex = -1;console.log(_selectedEventIndex)}
+			}
+		});
+	});
+	
+	$(_timeline).on("eventHover", function(event, div, i) {
+		if (i == _selectedEventIndex) return false;
+		$(div).qtip({
+			content:{
+				text:_events[i].title
+			},
+			show:{
+				when: false,
+				ready:true
+			},
+			style:{
+				classes: 'qtip-tipsy'
+			},
+			position:{
+				adjust:{x:30,y:-20},
+				my: 'bottom-left',
+				at:'bottom-right'
+			}
+		});
+	})
+	
+	$(document).click(function(e) {
+ 		console.log(e.currentTarget.parent);
+    });
 	
 	handleWindowResize();
 
