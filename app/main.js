@@ -36,14 +36,16 @@ var _index;
 var _selectedEventIndex;
 
 var _table = [
-	{year_begin:1950, year_end:1955},
+	{year_begin:1945, year_end:1950},
+	{year_begin:1951, year_end:1955},
 	{year_begin:1956, year_end:1960},
 	{year_begin:1961, year_end:1965},
 	{year_begin:1966, year_end:1970},
 	{year_begin:1971, year_end:1975},
 	{year_begin:1976, year_end:1980},
 	{year_begin:1981, year_end:1985},
-	{year_begin:1986, year_end:1989}		
+	{year_begin:1986, year_end:1989},
+	{year_begin:1990, year_end:1995}		
 ];
 
 var _events;
@@ -152,8 +154,8 @@ function finishInit() {
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 	
 	_timeline = new Timeline(
-		1950,
-		1990,
+		1945,
+		1995,
 		5,
 		_events
 	);
