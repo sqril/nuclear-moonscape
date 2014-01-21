@@ -183,7 +183,7 @@ function finishInit() {
 				classes: 'qtip-tipsy'
 			},
 			position:{
-				adjust:{x:30,y:-20},
+				adjust:{x:25,y:-15},
 				my: 'bottom-left',
 				at:'bottom-right'
 			},
@@ -207,7 +207,7 @@ function finishInit() {
 				classes: 'qtip-tipsy'
 			},
 			position:{
-				adjust:{x:30,y:-20},
+				adjust:{x:25,y:-15},
 				my: 'bottom-left',
 				at:'bottom-right'
 			}
