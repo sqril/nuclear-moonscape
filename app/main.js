@@ -145,10 +145,6 @@ function finishInit() {
 	_layerTop = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerTop);	
 	
-	dojo.connect(_layerBottom, "onMouseOver", layer_onMouseOver);
-	dojo.connect(_layerBottom, "onMouseOut", layer_onMouseOut);
-	dojo.connect(_layerBottom, "onClick", layer_onClick);		
-
 	dojo.connect(_layerTop, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerTop, "onClick", layer_onClick);
