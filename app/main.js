@@ -265,33 +265,20 @@ function symbolize()
 	_layerBottom.clear();
 	_layerTop.clear();
 
-	var color;
-	var opacity;
-	var rgbOutline = [0,0,0];
 	$.each(_locations, function(index, value) {
 		if (
 			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
 			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
 			) 
 		{
-			color = [255,95,33];
-			opacity = 1;
-			rgbOutline = [255,255,255];
+			value.setSymbol(createSymbol(10,[255,95,33],1,[255,255,255]));
 			_layerTop.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
-			color = [190,190,190];
-			opacity = 0.37;
+			value.setSymbol(createSymbol(10,[190,190,190],0.37,[225,225,225]));						
 			_layerBottom.add(value);
-		} else if (parseInt(value.attributes.Date_Converted_Year) > year_end) {
-			color = [190,190,190];
-			opacity = 0.37;
-			//_layerBottom.add(value);			
 		} else {
-			color = [0,0,0];
-			opacity = 1;
-			_layerBottom.add(value);			
+			console.log("test location outside of date range");
 		}
-		value.setSymbol(createSymbol(10,color,opacity,rgbOutline));
 	});	
 }
 
