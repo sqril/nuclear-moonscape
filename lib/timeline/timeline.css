@@ -81,6 +81,14 @@
 	border-left: 17px solid #ff9f1d;
 }
 
+.event-wrapper.selected .arrow-block{
+	background-color: #ff9f1d;
+}
+
+.event-wrapper.selected .arrow-main{
+	border-left: 17px solid #ff9f1d;
+}
+
 .handle {
 	position:absolute;
 	left:80px;

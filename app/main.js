@@ -188,7 +188,7 @@ function finishInit() {
 				at:'bottom-right'
 			},
 			events:{
-				hide:function(event){_selectedEventIndex = -1;console.log(_selectedEventIndex)}
+				hide:function(event){_selectedEventIndex = -1;_timeline.deselectEvent();console.log(_selectedEventIndex)}
 			}
 		});
 	});
