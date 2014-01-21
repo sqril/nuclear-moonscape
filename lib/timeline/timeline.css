@@ -35,7 +35,7 @@
 
 .event-wrapper{
 	position: absolute;
-	left: 18px;
+	left: 16px;
 	margin-top: -9px;
 	cursor: pointer;
 	z-index:100;
@@ -44,10 +44,11 @@
 .arrow-block{
 	position: absolute;
 	background-color: #999;
-	height: 18px;
+	height: 12px;
 	width: 11px;
-	left: 45px;
+	left: 35px;
 	top: 0;
+	margin-top:2px;
 }
 
 .arrow-main{
@@ -55,10 +56,11 @@
 	height: 0;
 	width: 0;
 	top: 0;
-	left: 56px;
-	border-top: 9px solid transparent;
-	border-bottom: 9px solid transparent;	
-	border-left: 17px solid #999;
+	left: 46px;
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;	
+	border-left: 13px solid #999;
+	margin-top:2px;
 }
 
 .arrow-outline{
@@ -67,9 +69,9 @@
 	width: 0;
 	top: 0;
 	left: 56px;
-	border-top: 12px solid transparent;
-	border-bottom: 12px solid transparent;	
-	border-left: 20px solid #ccc;
+	border-top: 0px solid transparent;
+	border-bottom: 0px solid transparent;	
+	border-left: 0px solid #ccc;
 	margin-top: -3px
 }
 
@@ -78,7 +80,7 @@
 }
 
 .event-wrapper:hover .arrow-main{
-	border-left: 17px solid #ff9f1d;
+	border-left: 13px solid #ff9f1d;
 }
 
 .event-wrapper.selected .arrow-block{
@@ -86,7 +88,7 @@
 }
 
 .event-wrapper.selected .arrow-main{
-	border-left: 17px solid #ff9f1d;
+	border-left: 13px solid #ff9f1d;
 }
 
 .handle {
