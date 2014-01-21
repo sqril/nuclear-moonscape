@@ -268,14 +268,16 @@ function symbolize()
 
 	var color;
 	var opacity;
+	var rgbOutline = [0,0,0];
 	$.each(_locations, function(index, value) {
 		if (
 			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
 			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
 			) 
 		{
-			color = [255,0,0];
+			color = [255,95,33];
 			opacity = 1;
+			rgbOutline = [255,255,255];
 			_layerTop.add(value);
 		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
 			color = [190,190,190];
@@ -290,15 +292,15 @@ function symbolize()
 			opacity = 1;
 			_layerBottom.add(value);			
 		}
-		value.setSymbol(createSymbol(10,color,opacity));
+		value.setSymbol(createSymbol(10,color,opacity,rgbOutline));
 	});	
 }
 
-createSymbol = function(size, rgb, opacity)
+createSymbol = function(size, rgb, opacity, rgbOutline)
 {
 	return new esri.symbol.SimpleMarkerSymbol(
 				esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE, size,
-				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0,0,0].concat([opacity])), 2),
+				new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color(rgbOutline.concat([opacity])), 2),
 				new dojo.Color(rgb.concat([opacity]))
 			);	
 }
