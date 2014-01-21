@@ -234,3 +234,7 @@ a:hover{
 .infowindow-content-titlecontent {
 	font-weight:bold;
 }
+
+.esriPopup .titleButton.maximize {
+	visibility:hidden;
+}
