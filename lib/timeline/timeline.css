@@ -3,7 +3,7 @@
 	height: 100%;
 	width: 100%;
 	font-family: Arial, Helvetica, sans-serif;
-	color: #888;
+	color: #8b8b8b;
 }
 
 .period-wrapper{
@@ -12,7 +12,7 @@
 }
 
 .period-bar{	
-	background-color: #999;
+	background-color: #999999;
 	width: 40px;
 	margin-left: 80px;
 	height: 100%;
