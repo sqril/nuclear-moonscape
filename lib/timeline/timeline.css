@@ -43,7 +43,7 @@
 
 .arrow-block{
 	position: absolute;
-	background-color: #999;
+	background-color: #717171;
 	height: 12px;
 	width: 11px;
 	left: 35px;
@@ -59,7 +59,7 @@
 	left: 46px;
 	border-top: 6px solid transparent;
 	border-bottom: 6px solid transparent;	
-	border-left: 13px solid #999;
+	border-left: 13px solid #717171;
 	margin-top:2px;
 }
 
