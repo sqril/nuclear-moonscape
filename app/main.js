@@ -236,7 +236,7 @@ function situate()
 	symbolize();
 	displayYears();
 	console.log(_periods[_index].description);
-	$("#period-description").html(_periods[_index].description);
+	$("#period-text").html(_periods[_index].description);
 }
 
 function onKeyDown(e)
