@@ -194,28 +194,30 @@ function finishInit() {
 			}
 		});
 	});
-	
-	$(_timeline).on("eventHover", function(event, div, i) {
-		if (i == _selectedEventIndex) return false;
-		$(div).qtip({
-			content:{
-				text:_events[i].title
-			},
-			show:{
-				when: false,
-				ready:true
-			},
-			style:{
-				classes: 'qtip-tipsy'
-			},
-			position:{
-				adjust:{x:25,y:-15},
-				my: 'bottom-left',
-				at:'bottom-right'
-			}
-		});
-	})
-	
+
+	if (!_isMobile) {
+		$(_timeline).on("eventHover", function(event, div, i) {
+			if (i == _selectedEventIndex) return false;
+			$(div).qtip({
+				content:{
+					text:_events[i].title
+				},
+				show:{
+					when: false,
+					ready:true
+				},
+				style:{
+					classes: 'qtip-tipsy'
+				},
+				position:{
+					adjust:{x:25,y:-15},
+					my: 'bottom-left',
+					at:'bottom-right'
+				}
+			});
+		})		
+	}
+		
 	handleWindowResize();
 
 	_index = _timeline.getCurrentIndex();
