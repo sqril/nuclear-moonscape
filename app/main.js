@@ -174,7 +174,7 @@ function finishInit() {
 			content:{
 				text:_events[i].description,
 				title:_events[i].title,
-				button:true
+				button:false
 			},
 			show:{
 				when: false,
