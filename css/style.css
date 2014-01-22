@@ -134,6 +134,7 @@ a:hover{
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 	cursor:pointer;
+	font-family:Verdana, Geneva, sans-serif;
 }
 
 #tabBar .tab:hover {
@@ -285,6 +286,7 @@ a:hover{
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:12px;
 	border-width:0px;
+	line-height:15px;
 }
 
 .qtip-light .qtip-titlebar {
@@ -295,5 +297,4 @@ a:hover{
 
 .qtip-light .qtip-content {
 	padding: 10px;
-	line-height:15px;
 }
