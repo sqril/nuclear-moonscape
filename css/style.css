@@ -53,9 +53,7 @@ a:hover{
 
 #left {
 	background-color:#525252;
-	width:25%;
-	min-width:300px;
-	max-width:400px;
+	width:350px;
 	height:100%;
 	float:left;
 }
@@ -147,15 +145,15 @@ a:hover{
 
 #pictureFrame {
 	background-color:white;
-	height:250px;
 	width:100%;
-	overflow:hidden;
+	height:226px;
+	position:relative;
 }
 
 #pictureFrame img {
+	width:100%;
+	position:absolute;
 }
-
-/* height deduction 128 (header) + 40 (padding) + 40 (tabbar) + 250 (pictureframe) */
 
 #info {
 	color:white;

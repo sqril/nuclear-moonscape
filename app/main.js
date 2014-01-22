@@ -217,6 +217,17 @@ function finishInit() {
 			});
 		})		
 	}
+	
+	$("#tabBar .tab").click(function(e) {
+        $("#tabBar .tab").removeClass("selected");
+		$(this).addClass("selected");
+		var index = $.inArray(e.currentTarget, $("#tabBar .tab"));
+		if (index) {
+			$($("#pictureFrame img")[1]).fadeOut();			
+		} else {
+			$($("#pictureFrame img")[1]).fadeIn();			
+		}
+    });
 		
 	handleWindowResize();
 
