@@ -118,9 +118,27 @@ a:hover{
 	outline:none;
 }
 
+#tabBar {
+	background-color:#06C;
+	height:40px;
+	width:100%;
+}
+
+#pictureFrame {
+	background-color:white;
+	height:250px;
+	width:100%;
+	overflow:hidden;
+}
+
+#pictureFrame img {
+}
+
+/* height deduction 128 (header) + 40 (padding) + 40 (tabbar) + 250 (pictureframe) */
+
 #info {
 	color:white;
-	height: calc(100% - 168px);
+	height: calc(100% - 458px);
 	padding:20px;
 }
 
