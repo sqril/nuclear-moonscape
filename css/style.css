@@ -159,12 +159,12 @@ a:hover{
 
 #info {
 	color:white;
-	height: calc(100% - 458px);
+/*  height: calculated in main::handleWindowResize() */
 	padding:20px;
 }
 
 #intro {
-	height: calc(50% - 21px);
+/*	height: calculated in main::handleWindowResize() */
 	overflow-y:auto;	
 }
 
@@ -184,7 +184,7 @@ a:hover{
 }
 
 #period-description {
-	height: calc(50% - 21px);
+/*	height: calculated in main::handleWindowResize() */
 	overflow-y:auto;
 }
 
