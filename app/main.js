@@ -176,7 +176,7 @@ function finishInit() {
 			},
 			hide:'unfocus',
 			style:{
-				classes: 'qtip-tipsy'
+				classes: 'qtip-light qtip-rounded'
 			},
 			position:{
 				adjust:{x:25,y:-15},

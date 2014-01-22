@@ -238,3 +238,23 @@ a:hover{
 .esriPopup .titleButton.maximize {
 	visibility:hidden;
 }
+
+.esriPopup .titlePane {
+	background-color:#ff621d;
+}
+
+.qtip-light {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	border-width:0px;
+}
+
+.qtip-light .qtip-titlebar {
+	background-color: #ff9f1d;
+	font-weight:normal;
+	color:white;
+}
+
+.qtip-light .qtip-content {
+	padding: 10px;
+}
