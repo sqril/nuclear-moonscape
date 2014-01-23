@@ -13,6 +13,7 @@ var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com")
 var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
+var FIELDNAME_ID = "EsriID";
 var FIELDNAME_DATE_CONVERTED_YEAR = "YearText";
 var FIELDNAME_NAME = "FullName";
 var FIELDNAME_YIELD = "Yield";
@@ -185,6 +186,11 @@ function finishInit() {
 	
 	$(_timeline).on("eventSelection", function(event, div, i) {
 		_selectedEventIndex = i;
+		var featureID = _events[i].location_id;
+		if (featureID != null) {
+			var selected = $.grep(_locations, function(n,i){return n.attributes[FIELDNAME_ID] == featureID})[0];
+			showInfoWindow(selected);
+		}
 		$(".qtip").remove();
 		$(div).qtip({
 			content:{
@@ -367,13 +373,21 @@ function layer_onClick(event)
 {
 	$(".qtip").remove();
 	var graphic = event.graphic;
-	
+	showInfoWindow(graphic);
+}
+
+function showInfoWindow(graphic)
+{
 	var table = $("<table></table>");
 	var tr;
 	var val;
 	$.each([FIELDNAME_SHOT_NAME,FIELDNAME_DATE,FIELDNAME_YIELD,FIELDNAME_DELIVERY,FIELDNAME_PURPOSE],function(index, value){
 		val = graphic.attributes[value];
-		if (value == FIELDNAME_DATE) val = new Date(val).toLocaleDateString();
+		if (value == FIELDNAME_DATE) {
+			val = new Date(val);
+			val.setDate(val.getDate()+1)
+			val = val.toLocaleDateString();
+		}
 		tr = $("<tr></tr>");
 		$(tr).append("<td class='infowindow-content-titlename'>"+_fieldAliases[value]+"</td>")
 		$(tr).append("<td class='infowindow-content-titlecontent'>"+val+"</td>");
@@ -381,9 +395,9 @@ function layer_onClick(event)
 	});
 	var content = $("<div></div>");
 	$(content).append(table);
-	_map.infoWindow.show(event.mapPoint);
+	_map.infoWindow.show(graphic.geometry);
 	_map.infoWindow.setTitle("Operation "+graphic.attributes[FIELDNAME_OPERATION_NAME]);
-	_map.infoWindow.setContent(content.html());
+	_map.infoWindow.setContent(content.html());	
 }
 
 function moveGraphicToFront(graphic)
