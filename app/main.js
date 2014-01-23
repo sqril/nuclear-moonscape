@@ -7,18 +7,34 @@ dojo.require("esri.map");
 ***************** begin config section ****************
 *******************************************************/
 
-var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
+var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/Nuclear_test_events_at_Yucca_Flat/FeatureServer/0";
 var SINKS_SERVICE_URL = "http://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_sinks/MapServer";
 var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com") >= 0 ? "http://storymaps.esri.com/proxy/proxy.ashx" : "http://localhost/proxy/proxy.ashx";
 var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
-var FIELDNAME_DATE_CONVERTED_YEAR = "Date_Converted_Year";
-var FIELDNAME_NAME = "Name";
+var FIELDNAME_DATE_CONVERTED_YEAR = "YearText";
+var FIELDNAME_NAME = "FullName";
 var FIELDNAME_YIELD = "Yield";
-var FIELDNAME_DATE = "Date";
-var FIELDNAME_DELIVERY = "Delivery";
-var FIELDNAME_HEIGHT = "Height";
+var FIELDNAME_DATE = "DayMonthYearText";
+var FIELDNAME_DELIVERY = "DeliveryMethod";
+var FIELDNAME_HEIGHT = "HeightAboveGround";
+var FIELDNAME_OPERATION_NAME = "OperatonName";
+var FIELDNAME_SHOT_NAME = "ShotName";
+var FIELDNAME_PURPOSE = "Purpose";
+
+var _fieldAliases = new Object();
+
+_fieldAliases[FIELDNAME_DATE_CONVERTED_YEAR] = "Year"; 
+_fieldAliases[FIELDNAME_NAME] = "Name";
+_fieldAliases[FIELDNAME_YIELD] = "Size"; 
+_fieldAliases[FIELDNAME_DATE] = "Date";
+_fieldAliases[FIELDNAME_DELIVERY] = "Delivery method";
+_fieldAliases[FIELDNAME_HEIGHT] = "Height";
+_fieldAliases[FIELDNAME_OPERATION_NAME] = "Operation";
+_fieldAliases[FIELDNAME_SHOT_NAME] = "Test shot";
+_fieldAliases[FIELDNAME_PURPOSE] = "Purpose";
+
 
 /******************************************************
 ***************** end config section ******************
@@ -318,7 +334,7 @@ function layer_onMouseOver(event)
 
 	$(graphic.getDojoShape().getNode()).qtip({
 		content:{
-			text:graphic.attributes[FIELDNAME_DATE_CONVERTED_YEAR]
+			text:graphic.attributes[FIELDNAME_OPERATION_NAME]+", "+graphic.attributes[FIELDNAME_DATE_CONVERTED_YEAR]
 		},
 		show:{
 			when: false,
@@ -354,16 +370,16 @@ function layer_onClick(event)
 	
 	var table = $("<table></table>");
 	var tr;
-	$.each([FIELDNAME_YIELD,FIELDNAME_DATE,FIELDNAME_DELIVERY,FIELDNAME_HEIGHT],function(index, value){
+	$.each([FIELDNAME_SHOT_NAME,FIELDNAME_DATE,FIELDNAME_YIELD,FIELDNAME_DELIVERY,FIELDNAME_PURPOSE],function(index, value){
 		tr = $("<tr></tr>");
-		$(tr).append("<td class='infowindow-content-titlename'>"+value+"</td>")
+		$(tr).append("<td class='infowindow-content-titlename'>"+_fieldAliases[value]+"</td>")
 		$(tr).append("<td class='infowindow-content-titlecontent'>"+graphic.attributes[value]+"</td>");
 		$(table).append(tr);
 	});
 	var content = $("<div></div>");
 	$(content).append(table);
 	_map.infoWindow.show(event.mapPoint);
-	_map.infoWindow.setTitle(graphic.attributes[FIELDNAME_NAME].substring(5));
+	_map.infoWindow.setTitle(graphic.attributes[FIELDNAME_OPERATION_NAME]);
 	_map.infoWindow.setContent(content.html());
 }
 
