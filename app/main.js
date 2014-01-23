@@ -13,6 +13,11 @@ var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pu
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
 var FIELDNAME_DATE_CONVERTED_YEAR = "Date_Converted_Year";
+var FIELDNAME_NAME = "Name";
+var FIELDNAME_YIELD = "Yield";
+var FIELDNAME_DATE = "Date";
+var FIELDNAME_DELIVERY = "Delivery";
+var FIELDNAME_HEIGHT = "Height";
 
 /******************************************************
 ***************** end config section ******************
@@ -346,7 +351,7 @@ function layer_onClick(event)
 	
 	var table = $("<table></table>");
 	var tr;
-	$.each(["Yield","Date","Delivery","Height"],function(index, value){
+	$.each([FIELDNAME_YIELD,FIELDNAME_DATE,FIELDNAME_DELIVERY,FIELDNAME_HEIGHT],function(index, value){
 		tr = $("<tr></tr>");
 		$(tr).append("<td class='infowindow-content-titlename'>"+value+"</td>")
 		$(tr).append("<td class='infowindow-content-titlecontent'>"+graphic.attributes[value]+"</td>");
@@ -355,7 +360,7 @@ function layer_onClick(event)
 	var content = $("<div></div>");
 	$(content).append(table);
 	_map.infoWindow.show(event.mapPoint);
-	_map.infoWindow.setTitle(graphic.attributes.Name.substring(5));
+	_map.infoWindow.setTitle(graphic.attributes[FIELDNAME_NAME].substring(5));
 	_map.infoWindow.setContent(content.html());
 }
 
