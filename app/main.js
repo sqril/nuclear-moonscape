@@ -16,6 +16,7 @@ var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub
 ***************** end config section ******************
 *******************************************************/
 
+var _originalHeaderHeight;
 var _map;
 
 var _dojoReady = false;
@@ -70,6 +71,8 @@ function init() {
 	
 	if (!_jqueryReady) return;
 	if (!_dojoReady) return;
+	
+	_originalHeaderHeight = $("#header").height();
 	
 	// determine whether we're in embed mode
 	
@@ -398,10 +401,13 @@ function moveGraphicToFront(graphic)
 }
 
 function handleWindowResize() {
-	/*
-	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
-	else $("#header").height(115);
-	*/
+
+	if (($("body").height() <= 600) || _isEmbed) {
+		$("#header").height(0);
+	} else {
+		$("#header").height(_originalHeaderHeight);
+	}
+
 	var x = parseInt($("#info").css("padding-bottom"));
 	var y = parseInt($("#info").css("padding-top"));
 	$("#info").height($("#left").height() - ($("#header").height()+$("#tabBar").height()+$("#pictureFrame").height()+x+y));
