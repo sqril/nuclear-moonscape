@@ -163,7 +163,6 @@ a:hover{
 
 #intro {
 /*	height: calculated in main::handleWindowResize() */
-	overflow-y:auto;	
 }
 
 #intro-text {

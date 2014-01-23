@@ -381,13 +381,11 @@ function handleWindowResize() {
 	var x = parseInt($("#info").css("padding-bottom"));
 	var y = parseInt($("#info").css("padding-top"));
 	$("#info").height($("#left").height() - ($("#header").height()+$("#tabBar").height()+$("#pictureFrame").height()+x+y));
-	var a = parseInt($("#info").height() / 2);
 	var b = $("#info hr").height() + parseInt($("#info hr").css("margin-top")) + parseInt($("#info hr").css("margin-bottom"));
-	b = parseInt(b/2);
-	$("#intro").height(a - b);
-	$("#period-description").height(a - b);
+	$("#period-description").height($("#info").height() - $("#intro").height() - b);
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
 	if (_timeline) _timeline.updateLayout();
+	
 }
