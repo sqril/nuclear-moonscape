@@ -8,6 +8,7 @@ dojo.require("esri.map");
 *******************************************************/
 
 var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_deliverymethod/FeatureServer/0";
+var SINKS_SERVICE_URL = "http://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/YuccaFlat_sinks/MapServer";
 var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com") >= 0 ? "http://storymaps.esri.com/proxy/proxy.ashx" : "http://localhost/proxy/proxy.ashx";
 var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
@@ -136,6 +137,8 @@ function init() {
 function finishInit() {
 	
 	if (!(_map.loaded && _periods && _events && _locations)) return false;
+	
+	_map.addLayer(new esri.layers.ArcGISTiledMapServiceLayer(SINKS_SERVICE_URL));
 	
 	_layerBottom = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerBottom);
