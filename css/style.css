@@ -242,6 +242,10 @@ a:hover{
 	width:100%;
 }
 
+#timeline {
+	min-height:480px;
+}
+
 .infowindow-content-titlename {
 	width:70px;
 }
