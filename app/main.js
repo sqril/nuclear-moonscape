@@ -53,17 +53,6 @@ var _events;
 var _periods;
 var _timeline;
 
-/*
-
-might need this if you're using icons.
-
-var _lutBallIconSpecs = {
-	tiny:new IconSpecs(24,24,12,12),
-	medium:new IconSpecs(30,30,15,15),
-	large:new IconSpecs(30,30,15,15)
-}
-*/
-
 dojo.addOnLoad(function() {_dojoReady = true;init()});
 jQuery(document).ready(function() {_jqueryReady = true;init()});
 
@@ -317,11 +306,7 @@ function layer_onMouseOver(event)
 	var graphic = event.graphic;
 	_map.setMapCursor("pointer");
 	graphic.setSymbol(graphic.symbol.setSize(12));
-	/*
-	if ($.inArray(graphic, _selected) == -1) {
-		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.medium));
-	}
-	*/
+
 	if (!_isIE) moveGraphicToFront(graphic);	
 
 	$(graphic.getDojoShape().getNode()).qtip({
@@ -352,11 +337,6 @@ function layer_onMouseOut(event)
 	var graphic = event.graphic;
 	graphic.setSymbol(graphic.symbol.setSize(10));
 	_map.setMapCursor("default");
-	/*
-	if ($.inArray(graphic, _selected) == -1) {
-		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.tiny));
-	}
-	*/
 }
 
 
@@ -380,20 +360,6 @@ function layer_onClick(event)
 	_map.infoWindow.setContent(content.html());
 }
 
-/*
-
-function createIconMarker(iconPath, spec) 
-{
-	return new esri.symbol.PictureMarkerSymbol(iconPath, spec.getWidth(), spec.getHeight()); 
-}
-
-function resizeSymbol(symbol, spec)
-{
-	return symbol.setWidth(spec.getWidth()).setHeight(spec.getHeight())	
-}
-
-
-*/
 function moveGraphicToFront(graphic)
 {
 	var dojoShape = graphic.getDojoShape();
