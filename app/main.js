@@ -16,7 +16,7 @@ var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub
 var FIELDNAME_DATE_CONVERTED_YEAR = "YearText";
 var FIELDNAME_NAME = "FullName";
 var FIELDNAME_YIELD = "Yield";
-var FIELDNAME_DATE = "DayMonthYearText";
+var FIELDNAME_DATE = "Date";
 var FIELDNAME_DELIVERY = "DeliveryMethod";
 var FIELDNAME_HEIGHT = "HeightAboveGround";
 var FIELDNAME_OPERATION_NAME = "OperatonName";
@@ -370,16 +370,19 @@ function layer_onClick(event)
 	
 	var table = $("<table></table>");
 	var tr;
+	var val;
 	$.each([FIELDNAME_SHOT_NAME,FIELDNAME_DATE,FIELDNAME_YIELD,FIELDNAME_DELIVERY,FIELDNAME_PURPOSE],function(index, value){
+		val = graphic.attributes[value];
+		if (value == FIELDNAME_DATE) val = new Date(val).toLocaleDateString();
 		tr = $("<tr></tr>");
 		$(tr).append("<td class='infowindow-content-titlename'>"+_fieldAliases[value]+"</td>")
-		$(tr).append("<td class='infowindow-content-titlecontent'>"+graphic.attributes[value]+"</td>");
+		$(tr).append("<td class='infowindow-content-titlecontent'>"+val+"</td>");
 		$(table).append(tr);
 	});
 	var content = $("<div></div>");
 	$(content).append(table);
 	_map.infoWindow.show(event.mapPoint);
-	_map.infoWindow.setTitle(graphic.attributes[FIELDNAME_OPERATION_NAME]);
+	_map.infoWindow.setTitle("Operation "+graphic.attributes[FIELDNAME_OPERATION_NAME]);
 	_map.infoWindow.setContent(content.html());
 }
 
