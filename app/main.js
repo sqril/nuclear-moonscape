@@ -188,8 +188,8 @@ function finishInit() {
 		_selectedEventIndex = i;
 		var featureID = _events[i].location_id;
 		if (featureID != null) {
-			var selected = $.grep(_locations, function(n,i){return n.attributes[FIELDNAME_ID] == featureID})[0];
-			showInfoWindow(selected);
+			var arr = $.grep(_locations, function(n,i){return n.attributes[FIELDNAME_ID] == featureID});
+			if (arr.length > 0) showInfoWindow(arr[0]);
 		}
 		$(".qtip").remove();
 		$(div).qtip({
@@ -360,14 +360,12 @@ function layer_onMouseOver(event)
 	
 }
 
-
 function layer_onMouseOut(event) 
 {
 	var graphic = event.graphic;
 	graphic.setSymbol(graphic.symbol.setSize(10));
 	_map.setMapCursor("default");
 }
-
 
 function layer_onClick(event) 
 {
