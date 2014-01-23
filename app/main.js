@@ -12,6 +12,8 @@ var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com")
 var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
 var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
 
+var FIELDNAME_DATE_CONVERTED_YEAR = "Date_Converted_Year";
+
 /******************************************************
 ***************** end config section ******************
 *******************************************************/
@@ -272,13 +274,13 @@ function symbolize()
 
 	$.each(_locations, function(index, value) {
 		if (
-			(parseInt(value.attributes.Date_Converted_Year) >= year_begin) && 
-			(parseInt(value.attributes.Date_Converted_Year) <= year_end)
+			(parseInt(value.attributes[FIELDNAME_DATE_CONVERTED_YEAR]) >= year_begin) && 
+			(parseInt(value.attributes[FIELDNAME_DATE_CONVERTED_YEAR]) <= year_end)
 			) 
 		{
 			value.setSymbol(createSymbol(10,[255,95,33],1,[255,255,255]));
 			_layerTop.add(value);
-		} else if (parseInt(value.attributes.Date_Converted_Year) < year_begin) {
+		} else if (parseInt(value.attributes[FIELDNAME_DATE_CONVERTED_YEAR]) < year_begin) {
 			value.setSymbol(createSymbol(10,[190,190,190],0.37,[225,225,225]));						
 			_layerBottom.add(value);
 		} else {
@@ -308,7 +310,7 @@ function layer_onMouseOver(event)
 
 	$(graphic.getDojoShape().getNode()).qtip({
 		content:{
-			text:graphic.attributes.Date_Converted_Year
+			text:graphic.attributes[FIELDNAME_DATE_CONVERTED_YEAR]
 		},
 		show:{
 			when: false,
