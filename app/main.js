@@ -33,7 +33,6 @@ var _layerBottom;
 var _layerTop;
 
 var _locations;
-var _index;
 var _selectedEventIndex;
 
 var _table = [
@@ -155,7 +154,6 @@ function finishInit() {
 	);
 	
 	$(_timeline).on("indexChange", function() {
-		_index = _timeline.getCurrentIndex();
 		situate();
 	});
 	
@@ -223,7 +221,6 @@ function finishInit() {
 		
 	handleWindowResize();
 
-	_index = _timeline.getCurrentIndex();
 	situate();
 	// extent adjustment needs to be on a slight lag to give
 	// browser chance to deal with initial sizing
@@ -242,7 +239,7 @@ function situate()
 {
 	symbolize();
 	displayYears();
-	$("#period-text").html("<span class='year-preface'>"+$("#year").html()+"</span>"+_periods[_index].description);
+	$("#period-text").html("<span class='year-preface'>"+$("#year").html()+"</span>"+_periods[_timeline.getCurrentIndex()].description);
 	_map.infoWindow.hide();
 }
 
@@ -259,16 +256,16 @@ function onKeyDown(e)
 
 function displayYears()
 {
-	var year_begin = _table[_index].year_begin;
-	var year_end = _table[_index].year_end;
+	var year_begin = _table[_timeline.getCurrentIndex()].year_begin;
+	var year_end = _table[_timeline.getCurrentIndex()].year_end;
 	$("#year").html(year_begin+" - "+year_end);		
 }
 
 function symbolize()
 {
 
-	var year_begin = _table[_index].year_begin;
-	var year_end = _table[_index].year_end;
+	var year_begin = _table[_timeline.getCurrentIndex()].year_begin;
+	var year_end = _table[_timeline.getCurrentIndex()].year_end;
 	
 	_layerBottom.clear();
 	_layerTop.clear();
