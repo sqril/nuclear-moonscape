@@ -338,25 +338,9 @@ function layer_onMouseOver(event)
 
 	if (!_isIE) moveGraphicToFront(graphic);	
 
-	$(graphic.getDojoShape().getNode()).qtip({
-		content:{
-			text:graphic.attributes[FIELDNAME_OPERATION_NAME]+", "+graphic.attributes[FIELDNAME_DATE_CONVERTED_YEAR]
-		},
-		show:{
-			when: false,
-			ready:true,
-			delay:0
-		},
-		style:{
-			classes: 'qtip-tipsy'
-		},
-		position:{
-			adjust:{x:-5,y:-10},
-			my: 'bottom-left',
-			at:'bottom-right'
-		}
-	});
-	
+	$("#hoverInfo").html("<b>"+graphic.attributes[FIELDNAME_OPERATION_NAME]+", "+graphic.attributes[FIELDNAME_DATE_CONVERTED_YEAR]+"</b>");
+	var pt = _map.toScreen(graphic.geometry);
+	hoverInfoPos(pt.x,pt.y);	
 	
 }
 
@@ -365,11 +349,12 @@ function layer_onMouseOut(event)
 	var graphic = event.graphic;
 	graphic.setSymbol(graphic.symbol.setSize(10));
 	_map.setMapCursor("default");
+	$("#hoverInfo").hide();	
 }
 
 function layer_onClick(event) 
 {
-	$(".qtip").remove();
+	$("#hoverInfo").hide();
 	var graphic = event.graphic;
 	showInfoWindow(graphic);
 }
@@ -396,6 +381,22 @@ function showInfoWindow(graphic)
 	_map.infoWindow.show(graphic.geometry);
 	_map.infoWindow.setTitle("Operation "+graphic.attributes[FIELDNAME_OPERATION_NAME]);
 	_map.infoWindow.setContent(content.html());	
+}
+
+function hoverInfoPos(x,y){
+	if (x <= ($("#map").width())-230){
+		$("#hoverInfo").css("left",x+15);
+	}
+	else{
+		$("#hoverInfo").css("left",x-25-($("#hoverInfo").width()));
+	}
+	if (y >= ($("#hoverInfo").height())+50){
+		$("#hoverInfo").css("top",y-35-($("#hoverInfo").height()));
+	}
+	else{
+		$("#hoverInfo").css("top",y-15+($("#hoverInfo").height()));
+	}
+	$("#hoverInfo").show();
 }
 
 function moveGraphicToFront(graphic)
