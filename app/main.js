@@ -56,6 +56,7 @@ var _isEmbed = false;
 
 var _layerBottom;
 var _layerTop;
+var _layerHighlight;
 
 var _locations;
 var _selectedEventIndex;
@@ -163,15 +164,22 @@ function finishInit() {
 	_layerTop = new esri.layers.GraphicsLayer();
 	_map.addLayer(_layerTop);	
 	
+	_layerHighlight = new esri.layers.GraphicsLayer()
+	_map.addLayer(_layerHighlight);
+	
 	dojo.connect(_layerTop, "onMouseOver", layer_onMouseOver);
 	dojo.connect(_layerTop, "onMouseOut", layer_onMouseOut);
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 	
 	dojo.connect(_map, 'onClick', function(event){
 		if ($.inArray(event.graphic, _layerTop.graphics) == -1) {
-			_map.infoWindow.hide();
+			hideInfoWindow();
 		}
 	});	
+	
+	dojo.connect(_map.infoWindow, "onHide", function(event) {
+		_layerHighlight.clear();
+	})
 	
 	_timeline = new Timeline(
 		1945,
@@ -185,11 +193,17 @@ function finishInit() {
 	});
 	
 	$(_timeline).on("eventSelection", function(event, div, i) {
+		hideInfoWindow();
 		_selectedEventIndex = i;
 		var featureID = _events[i].location_id;
 		if (featureID != null) {
 			var arr = $.grep(_locations, function(n,i){return n.attributes[FIELDNAME_ID] == featureID});
-			if (arr.length > 0) showInfoWindow(arr[0]);
+			if (arr.length > 0) {
+				var g = arr[0];
+				showInfoWindow(g);
+				var highlight = new esri.Graphic(g.geometry, createSymbol(10,[255,159,29],1,[255,255,255]));
+				_layerHighlight.add(highlight);
+			}
 		}
 		$(".qtip").remove();
 		$(div).qtip({
@@ -272,7 +286,7 @@ function situate()
 	symbolize();
 	displayYears();
 	$("#period-text").html("<span class='year-preface'>"+$("#year").html()+"</span>"+_periods[_timeline.getCurrentIndex()].description);
-	_map.infoWindow.hide();
+	hideInfoWindow();
 }
 
 function onKeyDown(e)
@@ -360,7 +374,7 @@ function layer_onClick(event)
 }
 
 function showInfoWindow(graphic)
-{
+{	
 	var table = $("<table></table>");
 	var tr;
 	var val;
@@ -381,6 +395,12 @@ function showInfoWindow(graphic)
 	_map.infoWindow.show(graphic.geometry);
 	_map.infoWindow.setTitle("Operation "+graphic.attributes[FIELDNAME_OPERATION_NAME]);
 	_map.infoWindow.setContent(content.html());	
+}
+
+function hideInfoWindow()
+{
+	_layerHighlight.clear();
+	_map.infoWindow.hide();
 }
 
 function hoverInfoPos(x,y){
