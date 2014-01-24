@@ -385,16 +385,16 @@ function showInfoWindow(graphic)
 
 function hoverInfoPos(x,y){
 	if (x <= ($("#map").width())-230){
-		$("#hoverInfo").css("left",x+15);
+		$("#hoverInfo").css("left",x+5);
 	}
 	else{
-		$("#hoverInfo").css("left",x-25-($("#hoverInfo").width()));
+		$("#hoverInfo").css("left",x-15-($("#hoverInfo").width()));
 	}
 	if (y >= ($("#hoverInfo").height())+50){
-		$("#hoverInfo").css("top",y-35-($("#hoverInfo").height()));
+		$("#hoverInfo").css("top",y-25-($("#hoverInfo").height()));
 	}
 	else{
-		$("#hoverInfo").css("top",y-15+($("#hoverInfo").height()));
+		$("#hoverInfo").css("top",y+($("#hoverInfo").height()));
 	}
 	$("#hoverInfo").show();
 }
