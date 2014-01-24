@@ -168,7 +168,7 @@ function finishInit() {
 	dojo.connect(_layerTop, "onClick", layer_onClick);
 	
 	dojo.connect(_map, 'onClick', function(event){
-		if (event.graphic == null) {
+		if ($.inArray(event.graphic, _layerTop.graphics) == -1) {
 			_map.infoWindow.hide();
 		}
 	});	
