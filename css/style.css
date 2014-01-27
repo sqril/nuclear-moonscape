@@ -135,6 +135,7 @@ a:hover{
 	border-top-right-radius:5px;
 	cursor:pointer;
 	font-family:Verdana, Geneva, sans-serif;
+	height:17px;
 }
 
 #tabBar .tab:hover {
