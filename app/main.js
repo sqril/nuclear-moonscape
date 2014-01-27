@@ -221,9 +221,9 @@ function finishInit() {
 				classes: 'qtip-light qtip-rounded'
 			},
 			position:{
-				adjust:{x:25,y:-15},
-				my: 'bottom-left',
-				at:'bottom-right'
+				adjust:{x:-33,y:0},
+				my: 'right-center',
+				at:'right-center'
 			},
 			events:{
 				hide:function(event){_selectedEventIndex = -1;_timeline.deselectEvent();console.log(_selectedEventIndex)}
@@ -246,9 +246,9 @@ function finishInit() {
 					classes: 'qtip-tipsy'
 				},
 				position:{
-					adjust:{x:25,y:-15},
-					my: 'bottom-left',
-					at:'bottom-right'
+					adjust:{x:-33,y:0},
+					my: 'right-center',
+					at:'right-center'
 				}
 			});
 		})		
