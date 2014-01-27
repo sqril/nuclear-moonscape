@@ -441,7 +441,9 @@ function handleWindowResize() {
 
 	var x = parseInt($("#info").css("padding-bottom"));
 	var y = parseInt($("#info").css("padding-top"));
-	$("#info").height($("#left").height() - ($("#header").height()+$("#tabBar").height()+$("#pictureFrame").height()+x+y));
+	var z = $("#header").height()+$("#tabBar").height()+x+y;
+	if ($("#pictureFrame").css("display").toLowerCase() != "none") z = z+$("#pictureFrame").height();
+	$("#info").height($("#left").height() - z);
 	var b = $("#info hr").height() + parseInt($("#info hr").css("margin-top")) + parseInt($("#info hr").css("margin-bottom"));
 	$("#period-description").height($("#info").height() - $("#intro").height() - b);
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
