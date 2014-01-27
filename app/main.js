@@ -256,11 +256,11 @@ function finishInit() {
 		$(this).addClass("selected");
 		var index = $.inArray(e.currentTarget, $("#tabBar .tab"));
 		if (index == 2) {
-			$("#intro").slideUp();
+			$("#intro").slideUp(function(){handleWindowResize()});
 			$("#pictureFrame").slideUp();		
 			$("#info hr").slideUp();						
 		} else {
-			$("#intro").slideDown();
+			$("#intro").slideDown(function(){handleWindowResize()});
 			$("#pictureFrame").slideDown();
 			$("#info hr").slideDown();					
 			if (index) {
