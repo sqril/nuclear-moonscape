@@ -255,21 +255,10 @@ function finishInit() {
         $("#tabBar .tab").removeClass("selected");
 		$(this).addClass("selected");
 		var index = $.inArray(e.currentTarget, $("#tabBar .tab"));
-		if (index == 2) {
-			$("#intro").slideUp(function(){handleWindowResize()});
-			$("#pictureFrame").slideUp();		
-			$("#info hr").slideUp();
-			$($("#tabBar .tab")[2]).hide();
+		if (index) {
+			$($("#pictureFrame img")[1]).fadeOut();			
 		} else {
-			$("#intro").slideDown(function(){handleWindowResize()});
-			$("#pictureFrame").slideDown();
-			$("#info hr").slideDown();					
-			if (index) {
-				$($("#pictureFrame img")[1]).fadeOut();			
-			} else {
-				$($("#pictureFrame img")[1]).fadeIn();			
-			}
-			$($("#tabBar .tab")[2]).show();
+			$($("#pictureFrame img")[1]).fadeIn();			
 		}
     });
 		
