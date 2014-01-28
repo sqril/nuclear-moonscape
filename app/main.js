@@ -441,13 +441,15 @@ function handleWindowResize() {
 		$("#header").height(_originalHeaderHeight);
 	}
 
-	var x = parseInt($("#info").css("padding-bottom"));
-	var y = parseInt($("#info").css("padding-top"));
-	var z = $("#header").height()+$("#tabBar").height()+x+y;
-	if ($("#pictureFrame").css("display").toLowerCase() != "none") z = z+$("#pictureFrame").height();
+	var z = parseInt($("#info").css("padding-bottom"));
+	z = z + parseInt($("#info").css("padding-top"));
+	z = z + $("#header").height()+$("#tabBar").height();
+	if ($("#pictureFrame").css("display").toLowerCase() != "none") z = z + $("#pictureFrame").height();
 	$("#info").height($("#left").height() - z);
-	var b = $("#info hr").height() + parseInt($("#info hr").css("margin-top")) + parseInt($("#info hr").css("margin-bottom"));
-	$("#period-description").height($("#info").height() - $("#intro").height() - b);
+	
+	var hrDisplace = $("#info hr").height() + parseInt($("#info hr").css("margin-top")) + parseInt($("#info hr").css("margin-bottom"));
+	$("#period-description").height($("#info").height() - $("#intro").height() - hrDisplace);
+	
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
