@@ -215,7 +215,7 @@ function finishInit() {
 			},
 			hide:'unfocus',
 			style:{
-				classes: 'qtip-light qtip-rounded'
+				classes: 'qtip-light qtip-rounded qtip-shadow'
 			},
 			position:{
 				adjust:{x:-33,y:0},
@@ -258,7 +258,8 @@ function finishInit() {
 		if (index == 2) {
 			$("#intro").slideUp(function(){handleWindowResize()});
 			$("#pictureFrame").slideUp();		
-			$("#info hr").slideUp();						
+			$("#info hr").slideUp();
+			$($("#tabBar .tab")[2]).hide();
 		} else {
 			$("#intro").slideDown(function(){handleWindowResize()});
 			$("#pictureFrame").slideDown();
@@ -268,6 +269,7 @@ function finishInit() {
 			} else {
 				$($("#pictureFrame img")[1]).fadeIn();			
 			}
+			$($("#tabBar .tab")[2]).show();
 		}
     });
 		
