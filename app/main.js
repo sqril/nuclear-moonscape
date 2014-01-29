@@ -40,6 +40,7 @@ _fieldAliases[FIELDNAME_PURPOSE] = "Purpose";
 ***************** end config section ******************
 *******************************************************/
 
+var _firstTime = true;
 var _originalHeaderHeight;
 var _map;
 
@@ -186,6 +187,11 @@ function finishInit() {
 	);
 	
 	$(_timeline).on("indexChange", function() {
+		if (_firstTime) {
+			$("#intro-text").slideUp(function(){handleWindowResize()});
+			$("#intro-show").html("Show Intro");
+			_firstTime = false;
+		}
 		situate();
 	});
 	
@@ -444,4 +450,16 @@ function handleWindowResize() {
 	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
 	if (_timeline) _timeline.updateLayout();
 	
+}
+
+function toggleIntro() 
+{
+	if ($("#intro-text").css("display").toLowerCase() == "none") {
+		$("#intro-text").slideDown(function(){handleWindowResize()});	
+		$("#intro-show").html("Hide Intro");
+	} else {
+		$("#intro-text").slideUp(function(){handleWindowResize()});	
+		$("#intro-show").html("Show Intro");		
+	}
+	_firstTime = false;
 }
