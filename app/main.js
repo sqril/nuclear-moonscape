@@ -188,9 +188,7 @@ function finishInit() {
 	
 	$(_timeline).on("indexChange", function() {
 		if (_firstTime) {
-			$("#intro-text").slideUp(function(){handleWindowResize()});
-			$("#intro-show").html("Show Intro");
-			_firstTime = false;
+			toggleIntro();
 		}
 		situate();
 	});
@@ -444,7 +442,10 @@ function handleWindowResize() {
 	
 	var hrDisplace = $("#info hr").height() + parseInt($("#info hr").css("margin-top")) + parseInt($("#info hr").css("margin-bottom"));
 	$("#period-description").height($("#info").height() - $("#intro").height() - hrDisplace);
-	
+	if (_firstTime) {
+		$("#period-description").height(0);
+	}
+		
 	$("#map").width($("body").width() - $("#left").width() - $("#middle").width());
 	_map.resize();
 	$("#timeline").height($("#middle").height() - $("#year-case").height() - 10);
@@ -454,6 +455,7 @@ function handleWindowResize() {
 
 function toggleIntro() 
 {
+	$("#info hr").show();
 	if ($("#intro-text").css("display").toLowerCase() == "none") {
 		$("#intro-text").slideDown(function(){handleWindowResize()});	
 		$("#intro-show").html("Hide Intro");
