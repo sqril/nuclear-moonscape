@@ -372,6 +372,7 @@ function layer_onClick(event)
 	$("#hoverInfo").hide();
 	var graphic = event.graphic;
 	showInfoWindow(graphic);
+	_layerHighlight.clear();	
 }
 
 function showInfoWindow(graphic)
