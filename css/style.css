@@ -42,8 +42,6 @@ body {
 }
 
 a {
-	color:#555;
-	font-weight:bold;
 	text-decoration:none;
 }
 
@@ -171,6 +169,12 @@ a:hover{
 	margin-right:10px;
 	margin-left:10px;
 	margin-top:0px;
+}
+
+#intro-show {
+	color: #c6c6c6;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:normal;
 }
 
 #info hr {
