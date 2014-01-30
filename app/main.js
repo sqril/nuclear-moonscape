@@ -9,8 +9,8 @@ dojo.require("esri.map");
 
 var FEATURE_SERVICE_URL = "http://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/Nuclear_test_events_at_Yucca_Flat/FeatureServer/0";
 var PROXY_URL = window.location.href.toLowerCase().indexOf("storymaps.esri.com") >= 0 ? "http://storymaps.esri.com/proxy/proxy.ashx" : "http://localhost/proxy/proxy.ashx";
-var PERIODS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdGlNUEJsZzVqODJ6OXJUUkpWQVMwOUE&output=csv";
-var EVENTS_SPREADSHEET_URL = PROXY_URL+"?https://docs.google.com/spreadsheet/pub?key=0ApQt3h4b9AptdFZPZ3dySTkzVzN1MVRTVF9UWWRCbUE&output=csv";
+var PERIODS_SPREADSHEET_URL = "data/Time-Period-Narratives.csv"
+var EVENTS_SPREADSHEET_URL = "data/Event-Narratives.csv";
 
 var FIELDNAME_ID = "EsriID";
 var FIELDNAME_DATE_CONVERTED_YEAR = "YearText";
