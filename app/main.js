@@ -287,6 +287,7 @@ function situate()
 	symbolize();
 	displayYears();
 	$("#period-text").html("<span class='year-preface'>"+$("#year").html()+"</span>"+_periods[_timeline.getCurrentIndex()].description);
+	$("#period-description").scrollTop(0);
 	hideInfoWindow();
 }
 
